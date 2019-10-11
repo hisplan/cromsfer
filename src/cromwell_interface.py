@@ -1,7 +1,5 @@
-import argparse
+#!/usr/bin/env python
 import requests
-import json
-from pprint import pprint
 from requests.exceptions import HTTPError
 from requests.auth import HTTPBasicAuth
 
@@ -47,7 +45,8 @@ def get_succeeded_workflows_not_transferred(secrets):
             headers={"Accept": "application/json"},
             params={
                 "status": "Succeeded",
-                "excludeLabelAnd": "flag:transferred"
+                "excludeLabelAnd": "transfer:done",
+                "excludeLabelAnd": "transfer:initiated"
             },
             auth=auth
         )
@@ -106,63 +105,3 @@ def get_metadata(secrets, workflow_id):
 
     except HTTPError as err:
         print(err)
-
-
-def get_secrets(path_secrets_file):
-
-    with open(path_secrets_file, "rt") as fin:
-        data = json.loads(fin.read())
-
-    return data
-
-
-def main(path_secrets_file):
-
-    secrets = get_secrets(path_secrets_file)
-
-    get_all_workflows(secrets)
-
-    set_label(
-        secrets,
-        "9782ec5f-0bb9-42b1-badd-73e2b6faf4e8",
-        "flag", "transferred"
-    )
-
-    data = get_succeeded_workflows_not_transferred(secrets)
-
-    pprint(data)
-
-    metadata = get_metadata(secrets, "9782ec5f-0bb9-42b1-badd-73e2b6faf4e8")
-
-    pprint(metadata)
-
-    outputs = metadata["outputs"]
-
-    pprint(outputs)
-
-
-def parse_arguments():
-
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument(
-        "--secrets",
-        action="store",
-        dest="path_secrets_file",
-        help="path to secrets file",
-        required=True
-    )
-
-    # parse arguments
-    params = parser.parse_args()
-
-    return params
-
-
-if __name__ == "__main__":
-
-    params = parse_arguments()
-
-    main(
-        params.path_secrets_file
-    )
