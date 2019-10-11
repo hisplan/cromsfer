@@ -110,8 +110,20 @@ def transfer(path_secrets_file, workflow_id, path_tmp):
         else:
             logger.info(f"{workflow_id}: nothing to transfer")
 
+        client.set_label(
+            secrets,
+            workflow_id,
+            "transfer", "done"
+        )
+
     except Exception as ex:
         logger.error(f"{workflow_id}: " + ex)
+
+        client.set_label(
+            secrets,
+            workflow_id,
+            "transfer", "failed"
+        )
 
 
 def parse_arguments():
