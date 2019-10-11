@@ -3,6 +3,7 @@ import os
 import argparse
 import logging
 import time
+import subprocess
 from pprint import pprint
 
 import auth
@@ -27,8 +28,13 @@ logging.getLogger('urllib3').setLevel(logging.CRITICAL)
 def initiate_transfer(path_secrets_file, workflow_id):
 
     try:
-        os.system(
-            f"python src/transfer.py --secrets={path_secrets_file} --workflow-id={workflow_id}"
+
+        subprocess.Popen(
+            [
+                "python", "src/transfer.py",
+                f"--secrets={path_secrets_file}",
+                f"--workflow-id={workflow_id}"
+            ]
         )
 
     except Exception as ex:
@@ -50,7 +56,9 @@ def start_polling(path_secrets_file, polling_time):
         candidates = data["results"]
 
         if len(candidates) > 0:
-            logger.info("Initiating {} output transfer...".format(len(candidates)))
+            logger.info(
+                "Initiating {} output transfer...".format(len(candidates))
+            )
 
         for workflow in candidates:
 
@@ -65,6 +73,8 @@ def start_polling(path_secrets_file, polling_time):
             logger.info(f"Transfer initiated for {workflow_id}")
 
             initiate_transfer(path_secrets_file, workflow_id)
+
+            logger.info("Moving on...")
 
         time.sleep(polling_time)
 
