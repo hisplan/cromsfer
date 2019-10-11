@@ -56,17 +56,15 @@ def start_polling(path_secrets_file, polling_time):
 
             workflow_id = workflow["id"]
 
-            # client.set_label(
-            #     secrets,
-            #     workflow_id,
-            #     "transfer", "initiated"
-            # )
-
-            initiate_transfer(path_secrets_file, workflow_id)
+            client.set_label(
+                secrets,
+                workflow_id,
+                "transfer", "initiated"
+            )
 
             logger.info(f"Transfer initiated for {workflow_id}")
 
-            break
+            initiate_transfer(path_secrets_file, workflow_id)
 
         time.sleep(polling_time)
 
@@ -95,5 +93,5 @@ if __name__ == "__main__":
 
     start_polling(
         params.path_secrets_file,
-        15
+        600
     )
