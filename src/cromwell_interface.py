@@ -40,13 +40,27 @@ def get_succeeded_workflows_not_transferred(secrets):
     base_url, auth = prep_api_call(secrets)
 
     try:
+        # fixme: doesn't work. maybe cromwell bug?
+        # response = requests.get(
+        #     url=f"{base_url}/query",
+        #     headers={"Accept": "application/json"},
+        #     params={
+        #         "status": "Succeeded",
+        #         "excludeLabelOr": "transfer:done",
+        #         "excludeLabelOr": "transfer:initiated",
+        #         "excludeLabelOr": "transfer:failed"
+        #     },
+        #     auth=auth
+        # )
+
+        # 1. only successful runs
+        # 2. only those with no value set for the `transfer` label
         response = requests.get(
             url=f"{base_url}/query",
             headers={"Accept": "application/json"},
             params={
                 "status": "Succeeded",
-                "excludeLabelAnd": "transfer:done",
-                "excludeLabelAnd": "transfer:initiated"
+                "label": "transfer:",
             },
             auth=auth
         )
