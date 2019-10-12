@@ -25,23 +25,26 @@ logging.getLogger('requests').setLevel(logging.CRITICAL)
 logging.getLogger('urllib3').setLevel(logging.CRITICAL)
 
 
-def initiate_transfer(path_secrets_file, workflow_id):
+def initiate_transfer(path_secrets_file, workflow_id, dry_run):
+
+    cmd = [
+        "python", "src/transfer.py",
+        f"--secrets={path_secrets_file}",
+        f"--workflow-id={workflow_id}"
+    ]
+
+    if dry_run:
+        cmd.append(--dry-run)
 
     try:
 
-        subprocess.Popen(
-            [
-                "python", "src/transfer.py",
-                f"--secrets={path_secrets_file}",
-                f"--workflow-id={workflow_id}"
-            ]
-        )
+        subprocess.Popen(cmd)
 
     except Exception as ex:
         logger.error(ex)
 
 
-def start_polling(path_secrets_file, polling_time):
+def start_polling(path_secrets_file, polling_time, poll_once, dry_run):
 
     secrets = auth.get_secrets(path_secrets_file)
 
@@ -64,17 +67,15 @@ def start_polling(path_secrets_file, polling_time):
 
             workflow_id = workflow["id"]
 
-            client.set_label(
-                secrets,
-                workflow_id,
-                "transfer", "initiated"
-            )
-
             logger.info(f"Transfer initiated for {workflow_id}")
 
-            initiate_transfer(path_secrets_file, workflow_id)
+            initiate_transfer(path_secrets_file, workflow_id, dry_run)
 
             logger.info("Moving on...")
+
+        # exit out if poll_once is true
+        if poll_once:
+            return
 
         time.sleep(polling_time)
 
@@ -91,6 +92,24 @@ def parse_arguments():
         required=True
     )
 
+    parser.add_argument(
+        "--once",
+        action="store_true",
+        dest="poll_once",
+        default=False,
+        help="Poll only once and exit",
+        required=False
+    )
+
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        dest="dry_run",
+        default=False,
+        help="Dry run",
+        required=False
+    )
+
     # parse arguments
     params = parser.parse_args()
 
@@ -101,7 +120,16 @@ if __name__ == "__main__":
 
     params = parse_arguments()
 
+    logger.info("Starting...")
+
+    if params.dry_run:
+        logger.info("Running in dry run mode")
+
     start_polling(
         params.path_secrets_file,
-        600
+        600,
+        params.poll_once,
+        params.dry_run
     )
+
+    logger.info("DONE.")

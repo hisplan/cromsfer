@@ -37,14 +37,20 @@ def run_command(cmd):
         logger.info(line)
 
 
-def copy_gcp(src, dst):
+def copy_gcp(src, dst, dry_run):
+
+    if dry_run:
+        return
 
     run_command(
         ["gsutil", "cp", src, dst]
     )
 
 
-def copy_aws(src, dst):
+def copy_aws(src, dst, dry_run):
+
+    if dry_run:
+        return
 
     run_command(
         ["aws", "s3", "cp", src, dst]
@@ -67,7 +73,7 @@ def write_metadata(workflow_id, metadata, path_tmp):
     return path_metadata
 
 
-def transfer(path_secrets_file, workflow_id, path_tmp):
+def transfer(path_secrets_file, workflow_id, path_tmp, dry_run):
 
     # fixme: determine aws or gcp
     copy = copy_gcp
@@ -82,13 +88,27 @@ def transfer(path_secrets_file, workflow_id, path_tmp):
         outputs = metadata["outputs"]
         pipeline_type = metadata["labels"]["pipelineType"]
         base_destination = metadata["labels"]["destination"].rstrip("/")
+        transfer_status = metadata["labels"]["transfer"]
+
+        if transfer_status == "-":
+            if not dry_run:
+                client.set_label(
+                    secrets,
+                    workflow_id,
+                    "transfer", "initiated"
+                )
+        else:
+            logger.info(
+                f"{workflow_id}: Aborting due to the current transfer status = {transfer_status}"
+            )
 
         path_metadata = write_metadata(workflow_id, metadata, path_tmp)
 
         logger.info(
-            f"{workflow_id}: transferring the metadata to {base_destination}")
+            f"{workflow_id}: transferring the metadata to {base_destination}"
+        )
 
-        copy(path_metadata, base_destination + "/")
+        copy(path_metadata, base_destination + "/", dry_run)
 
         # fixme: refactor later
         if pipeline_type == "Test":
@@ -97,6 +117,9 @@ def transfer(path_secrets_file, workflow_id, path_tmp):
         elif pipeline_type == "Sharp":
             from workflows import Sharp as x
             construct_src_dst_info = x.construct_src_dst_info
+        elif pipeline_type == "Velopipe":
+            from workflows import Velopipe as x
+            construct_src_dst_info = x.construct_src_dst_info
         else:
             raise Exception("Unknown pipeline type")
 
@@ -104,26 +127,27 @@ def transfer(path_secrets_file, workflow_id, path_tmp):
 
         if items:
             for (src, dst) in items:
-
                 logger.info(f"{workflow_id}: transferring from {src} to {dst}")
-                copy(src, dst)
+                copy(src, dst, dry_run)
         else:
             logger.info(f"{workflow_id}: nothing to transfer")
 
-        client.set_label(
-            secrets,
-            workflow_id,
-            "transfer", "done"
-        )
+        if not dry_run:
+            client.set_label(
+                secrets,
+                workflow_id,
+                "transfer", "done"
+            )
 
     except Exception as ex:
-        logger.error(f"{workflow_id}: " + ex)
+        logger.error(f"{workflow_id}: " + str(ex))
 
-        client.set_label(
-            secrets,
-            workflow_id,
-            "transfer", "failed"
-        )
+        if not dry_run:
+            client.set_label(
+                secrets,
+                workflow_id,
+                "transfer", "failed"
+            )
 
 
 def parse_arguments():
@@ -147,6 +171,15 @@ def parse_arguments():
     )
 
     parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        dest="dry_run",
+        default=False,
+        help="Dry run",
+        required=False
+    )
+
+    parser.add_argument(
         "--tmp",
         action="store",
         dest="path_tmp",
@@ -167,10 +200,14 @@ if __name__ == "__main__":
 
     logger.info(f"{params.workflow_id}: Starting...")
 
+    if params.dry_run:
+        logger.info(f"{params.workflow_id}: Running in dry run mode")
+
     transfer(
         params.path_secrets_file,
         params.workflow_id,
-        params.path_tmp
+        params.path_tmp,
+        params.dry_run
     )
 
     logger.info(f"{params.workflow_id}: DONE.")

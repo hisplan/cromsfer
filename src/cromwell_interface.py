@@ -60,7 +60,7 @@ def get_succeeded_workflows_not_transferred(secrets):
             headers={"Accept": "application/json"},
             params={
                 "status": "Succeeded",
-                "label": "transfer:",
+                "label": "transfer:-",
             },
             auth=auth
         )
