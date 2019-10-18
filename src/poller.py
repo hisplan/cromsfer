@@ -8,6 +8,7 @@ from pprint import pprint
 
 import auth
 import cromwell_interface as client
+from redis_queue import RedisQueue
 
 
 logger = logging.getLogger("poller")
@@ -34,7 +35,7 @@ def initiate_transfer(path_secrets_file, workflow_id, dry_run):
     ]
 
     if dry_run:
-        cmd.append(--dry-run)
+        cmd.append("--dry-run")
 
     try:
 
@@ -48,10 +49,18 @@ def start_polling(path_secrets_file, polling_time, poll_once, dry_run):
 
     secrets = auth.get_secrets(path_secrets_file)
 
+    # fixme: get host/port from config file
+    queue = RedisQueue(
+        name="test",
+        host="localhost",
+        port=6379
+    )
+
     while True:
 
         logger.info(
-            "Getting the list of completed, but not yet transferred workflows...")
+            "Getting the list of completed, but not yet transferred workflows..."
+        )
 
         # get workflows that have been completed successfully but not yet transferred
         data = client.get_succeeded_workflows_not_transferred(secrets)
@@ -67,11 +76,16 @@ def start_polling(path_secrets_file, polling_time, poll_once, dry_run):
 
             workflow_id = workflow["id"]
 
-            logger.info(f"Transfer initiated for {workflow_id}")
+            logger.info(f"Enqueuing {workflow_id} for output transfer...")
 
-            initiate_transfer(path_secrets_file, workflow_id, dry_run)
+            # initiate_transfer(path_secrets_file, workflow_id, dry_run)
+            queue.put(workflow_id)
 
-            logger.info("Moving on...")
+            client.set_label(
+                secrets,
+                workflow_id,
+                "transfer", "in queue"
+            )
 
         # exit out if poll_once is true
         if poll_once:

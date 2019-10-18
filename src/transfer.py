@@ -8,6 +8,7 @@ from pprint import pprint
 
 import auth
 import cromwell_interface as client
+from redis_queue import RedisQueue
 
 
 logger = logging.getLogger("transfer")
@@ -90,17 +91,21 @@ def transfer(path_secrets_file, workflow_id, path_tmp, dry_run):
         base_destination = metadata["labels"]["destination"].rstrip("/")
         transfer_status = metadata["labels"]["transfer"]
 
-        if transfer_status == "-":
-            if not dry_run:
-                client.set_label(
-                    secrets,
-                    workflow_id,
-                    "transfer", "initiated"
-                )
+        logger.info(
+            f"{workflow_id}: current transfer status = {transfer_status}"
+        )
+
+        if transfer_status == "in queue":
+            client.set_label(
+                secrets,
+                workflow_id,
+                "transfer", "initiated"
+            )
         else:
             logger.info(
                 f"{workflow_id}: Aborting due to the current transfer status = {transfer_status}"
             )
+            return
 
         path_metadata = write_metadata(workflow_id, metadata, path_tmp)
 
@@ -132,22 +137,76 @@ def transfer(path_secrets_file, workflow_id, path_tmp, dry_run):
         else:
             logger.info(f"{workflow_id}: nothing to transfer")
 
-        if not dry_run:
-            client.set_label(
-                secrets,
-                workflow_id,
-                "transfer", "done"
-            )
+        client.set_label(
+            secrets,
+            workflow_id,
+            "transfer", "done"
+        )
 
     except Exception as ex:
         logger.error(f"{workflow_id}: " + str(ex))
 
-        if not dry_run:
-            client.set_label(
-                secrets,
-                workflow_id,
-                "transfer", "failed"
-            )
+        client.set_label(
+            secrets,
+            workflow_id,
+            "transfer", "failed"
+        )
+
+
+def dequeue(path_secrets_file, workflow_id, path_tmp, poll_once, dry_run):
+
+    # fixme: get host/port from config file
+    queue = RedisQueue(
+        name="test",
+        host="localhost",
+        port=6379
+    )
+
+    while True:
+
+        logger.info(
+            "Waiting for a new task..."
+        )
+
+        workflow_id = queue.get(block=True, timeout=None)
+        workflow_id = workflow_id.decode()
+
+        logger.info(
+            f"{workflow_id}: Dequeued"
+        )
+
+        transfer(
+            path_secrets_file,
+            workflow_id,
+            path_tmp,
+            dry_run
+        )
+
+        # exit out if poll_once is true
+        if poll_once:
+            return
+
+
+def main(path_secrets_file, workflow_id, path_tmp, poll_once, dry_run):
+
+    if workflow_id:
+
+        transfer(
+            path_secrets_file,
+            workflow_id,
+            path_tmp,
+            dry_run
+        )
+
+    else:
+
+        dequeue(
+            path_secrets_file,
+            workflow_id,
+            path_tmp,
+            poll_once,
+            dry_run
+        )
 
 
 def parse_arguments():
@@ -166,8 +225,9 @@ def parse_arguments():
         "--workflow-id",
         action="store",
         dest="workflow_id",
+        default=None,
         help="Workflow ID",
-        required=True
+        required=False
     )
 
     parser.add_argument(
@@ -176,6 +236,15 @@ def parse_arguments():
         dest="dry_run",
         default=False,
         help="Dry run",
+        required=False
+    )
+
+    parser.add_argument(
+        "--once",
+        action="store_true",
+        dest="poll_once",
+        default=False,
+        help="Poll only once and exit",
         required=False
     )
 
@@ -198,16 +267,17 @@ if __name__ == "__main__":
 
     params = parse_arguments()
 
-    logger.info(f"{params.workflow_id}: Starting...")
+    logger.info(f"Starting...")
 
     if params.dry_run:
-        logger.info(f"{params.workflow_id}: Running in dry run mode")
+        logger.info("Running in dry run mode")
 
-    transfer(
+    main(
         params.path_secrets_file,
         params.workflow_id,
         params.path_tmp,
+        params.poll_once,
         params.dry_run
     )
 
-    logger.info(f"{params.workflow_id}: DONE.")
+    logger.info("DONE.")
