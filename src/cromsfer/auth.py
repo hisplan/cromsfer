@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import json
-
+import yaml
 
 def get_secrets(path_secrets_file):
 
@@ -9,3 +9,10 @@ def get_secrets(path_secrets_file):
 
     return data
 
+
+def get_config(path_config):
+
+    with open(path_config, "rt") as fin:
+        data = yaml.load(fin, Loader=yaml.FullLoader)
+
+    return data

@@ -6,6 +6,7 @@ import argparse
 import json
 from pprint import pprint
 
+import cromsfer.version as version
 import cromsfer.auth as auth
 import cromsfer.cromwell_interface as client
 from cromsfer.redis_queue import RedisQueue
@@ -84,14 +85,12 @@ def determine_copy_command(destination):
         return None
 
 
-def transfer(path_secrets_file, workflow_id, path_tmp, dry_run):
-
-    secrets = auth.get_secrets(path_secrets_file)
+def transfer(config, workflow_id, path_tmp, dry_run):
 
     try:
         logger.info(f"{workflow_id}: getting the metadata...")
 
-        metadata = client.get_metadata(secrets, workflow_id)
+        metadata = client.get_metadata(config["cromwell"], workflow_id)
 
         outputs = metadata["outputs"]
         pipeline_type = metadata["labels"]["pipelineType"]
@@ -106,7 +105,7 @@ def transfer(path_secrets_file, workflow_id, path_tmp, dry_run):
 
         if transfer_status == "in queue":
             client.set_label(
-                secrets,
+                config["cromwell"],
                 workflow_id,
                 "transfer", "initiated"
             )
@@ -147,7 +146,7 @@ def transfer(path_secrets_file, workflow_id, path_tmp, dry_run):
             logger.info(f"{workflow_id}: nothing to transfer")
 
         client.set_label(
-            secrets,
+            config["cromwell"],
             workflow_id,
             "transfer", "done"
         )
@@ -156,19 +155,19 @@ def transfer(path_secrets_file, workflow_id, path_tmp, dry_run):
         logger.error(f"{workflow_id}: " + str(ex))
 
         client.set_label(
-            secrets,
+            config["cromwell"],
             workflow_id,
             "transfer", "failed"
         )
 
 
-def dequeue(path_secrets_file, workflow_id, path_tmp, poll_once, dry_run):
+def dequeue(config, workflow_id, path_tmp, poll_once, dry_run):
 
     # fixme: get host/port from config file
     queue = RedisQueue(
-        name="test",
-        host="ec2-100-26-88-232.compute-1.amazonaws.com",
-        port=6379
+        name="cromsfer",
+        host=config["redis"]["host"],
+        port=config["redis"]["port"]
     )
 
     while True:
@@ -186,7 +185,7 @@ def dequeue(path_secrets_file, workflow_id, path_tmp, poll_once, dry_run):
         )
 
         transfer(
-            path_secrets_file,
+            config,
             workflow_id,
             path_tmp,
             dry_run
@@ -202,11 +201,12 @@ def parse_arguments():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        "--secrets",
+        "-c", "--config",
         action="store",
-        dest="path_secrets_file",
-        help="path to secrets file",
-        required=True
+        dest="path_config",
+        default="config.yaml",
+        help="path to configuration file",
+        required=False
     )
 
     parser.add_argument(
@@ -245,6 +245,12 @@ def parse_arguments():
         required=False
     )
 
+    parser.add_argument(
+        "-v", "--version",
+        action="version",
+        version='cromsfer.{} v{}'.format(parser.prog, version.__version__)
+    )
+
     # parse arguments
     params = parser.parse_args()
 
@@ -260,12 +266,13 @@ def main():
     if params.dry_run:
         logger.info("Running in dry run mode")
 
+    config = auth.get_config(params.path_config)
 
     # transfer immediately if workflod_id is passed without dequeing
     if params.workflow_id:
 
         transfer(
-            params.path_secrets_file,
+            config,
             params.workflow_id,
             params.path_tmp,
             params.dry_run
@@ -275,7 +282,7 @@ def main():
 
         # check Redis if we have a work to do
         dequeue(
-            params.path_secrets_file,
+            config,
             params.workflow_id,
             params.path_tmp,
             params.poll_once,

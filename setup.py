@@ -3,9 +3,12 @@ import setuptools
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+# get __version__
+exec(open('src/cromsfer/version.py').read())
+
 setuptools.setup(
     name="cromsfer",
-    version="0.0.1",
+    version=__version__,
     author="Jaeyoung Chun",
     author_email="chunj@mskcc.org",
     description="cromsfer",    
@@ -27,6 +30,7 @@ setuptools.setup(
     ],
     install_requires=[
         "requests",
-        "redis==3.3.11"
+        "redis==3.3.11",
+        "PyYAML==5.1.2"
     ]
 )

@@ -1,0 +1,7 @@
+cromwell:
+  url: http://w.x.y.z
+  username: john
+  password: xyz
+redis:
+  host: w.x.y.z
+  port: 6379
