@@ -18,7 +18,7 @@ logging.basicConfig(
     level=logging.DEBUG,
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler("transfer.log"),
+        logging.FileHandler("cromsfer.transfer.log"),
         logging.StreamHandler(sys.stdout)
     ]
 )

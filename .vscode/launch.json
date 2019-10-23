@@ -8,7 +8,7 @@
             "name": "Python: poller",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/src/bin/poller",
+            "program": "${workspaceFolder}/src/bin/cromsfer.poller",
             "console": "integratedTerminal",
             "args": [
                 "--config",
@@ -21,7 +21,7 @@
             "name": "Python: transfer (polling mode)",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/src/bin/transfer",
+            "program": "${workspaceFolder}/src/bin/cromsfer.transfer",
             "console": "integratedTerminal",
             "args": [
                 "--config",
@@ -33,7 +33,7 @@
             "name": "Python: transfer (Test Workflow)",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/src/bin/transfer",
+            "program": "${workspaceFolder}/src/bin/cromsfer.transfer",
             "console": "integratedTerminal",
             "args": [
                 "--config",
@@ -47,7 +47,7 @@
             "name": "Python: transfer (Sharp Workflow)",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/src/bin/transfer",
+            "program": "${workspaceFolder}/src/bin/cromsfer.transfer",
             "console": "integratedTerminal",
             "args": [
                 "--config",
@@ -61,7 +61,7 @@
             "name": "Python: transfer (Velopipe Workflow)",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/src/bin/transfer",
+            "program": "${workspaceFolder}/src/bin/cromsfer.transfer",
             "console": "integratedTerminal",
             "args": [
                 "--config",

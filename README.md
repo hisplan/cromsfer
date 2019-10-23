@@ -15,19 +15,19 @@ $ docker run --rm  -d -p 6379:6379 redis:5.0.6
 
 ## Poller
 
-`poller.py` picks up the workflows that have been completed, but 
+`cromsfer.poller` picks up the workflows that have been completed, but not yet transferred.
 
 ```bash
-$ python poller.py --secrets=~/secrets-gcp.json
+$ cromsfer.poller
 ```
 
 ## Transfer
 
 ```bash
-$ python transfer.py --secrets=~/secrets-gcp.json
+$ cromsfer.transfer
 ```
 
-## Dev
+## Development
 
 ```bash
 $ conda create -n cromsfer python=3.6.5 pip

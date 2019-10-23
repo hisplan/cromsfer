@@ -22,11 +22,14 @@ setuptools.setup(
     ],
     python_requires=">=3.6",
     # packages=setuptools.find_packages(),    
-    packages=["cromsfer"],
+    packages=[
+        "cromsfer",
+        "cromsfer.workflows"
+    ],
     package_dir={"": "src"},
     scripts=[
-        "src/bin/poller",
-        "src/bin/transfer"
+        "src/bin/cromsfer.poller",
+        "src/bin/cromsfer.transfer"
     ],
     install_requires=[
         "requests",

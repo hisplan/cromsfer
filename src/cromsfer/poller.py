@@ -16,9 +16,9 @@ logger = logging.getLogger("poller")
 
 logging.basicConfig(
     level=logging.DEBUG,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler("poller.log"),
+        logging.FileHandler("cromsfer.poller.log"),
         logging.StreamHandler(sys.stdout)
     ]
 )
@@ -62,9 +62,9 @@ def start_polling(path_config, polling_time, poll_once, dry_run):
 
             workflow_id = workflow["id"]
 
-            logger.info(f"Enqueuing {workflow_id} for output transfer...")
-
             queue.put(workflow_id)
+
+            logger.info(f"{workflow_id} queued for output transfer...")
 
             client.set_label(
                 config["cromwell"],
