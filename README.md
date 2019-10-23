@@ -1,4 +1,11 @@
-# cromwell-output-transfer
+# cromsfer
+
+Cromwell Output Transfer
+
+## Prerequisites
+
+- AWS CLI
+- gsutil
 
 ## Redis
 
@@ -18,4 +25,13 @@ $ python poller.py --secrets=~/secrets-gcp.json
 
 ```bash
 $ python transfer.py --secrets=~/secrets-gcp.json
+```
+
+## Dev
+
+```bash
+$ conda create -n cromsfer python=3.6.5 pip
+$ conda activate cromsfer
+$ git clone ...
+$ pip install -e .
 ```
