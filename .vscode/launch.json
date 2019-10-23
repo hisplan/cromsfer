@@ -11,8 +11,8 @@
             "program": "${workspaceFolder}/src/bin/poller",
             "console": "integratedTerminal",
             "args": [
-                "--secrets",
-                "~/secrets-aws.json",
+                "--config",
+                "${workspaceFolder}/config.aws.yaml",
                 "--once",
                 "--dry-run"
             ]
@@ -24,8 +24,8 @@
             "program": "${workspaceFolder}/src/bin/transfer",
             "console": "integratedTerminal",
             "args": [
-                "--secrets",
-                "~/secrets-aws.json",
+                "--config",
+                "config.aws.yaml",
                 "--once"
             ]
         },
@@ -36,8 +36,8 @@
             "program": "${workspaceFolder}/src/bin/transfer",
             "console": "integratedTerminal",
             "args": [
-                "--secrets",
-                "~/secrets-gcp.json",
+                "--config",
+                "config.gcp.yaml",
                 "--workflow-id",
                 "9782ec5f-0bb9-42b1-badd-73e2b6faf4e8",
                 "--dry-run"
@@ -50,8 +50,8 @@
             "program": "${workspaceFolder}/src/bin/transfer",
             "console": "integratedTerminal",
             "args": [
-                "--secrets",
-                "~/secrets-gcp.json",
+                "--config",
+                "config.gcp.yaml",
                 "--workflow-id",
                 "8dad3d5a-59cd-4a45-8b41-43dd16817f2d",
                 "--dry-run"
@@ -64,8 +64,8 @@
             "program": "${workspaceFolder}/src/bin/transfer",
             "console": "integratedTerminal",
             "args": [
-                "--secrets",
-                "~/secrets-gcp.json",
+                "--config",
+                "config.gcp.yaml",
                 "--workflow-id",
                 "790766eb-1979-4e5a-8124-f1dbce445b2e",
                 // "--dry-run"
@@ -78,8 +78,8 @@
             "program": "${workspaceFolder}/src/cromsfer/dump_for_test.py",
             "console": "integratedTerminal",
             "args": [
-                "--secrets",
-                "~/secrets-gcp.json"
+                "--config",
+                "config.gcp.yaml"
             ]
         },
         {
@@ -89,8 +89,8 @@
             "program": "${workspaceFolder}/src/cromsfer/remove_transfer_label.py",
             "console": "integratedTerminal",
             "args": [
-                "--secrets",
-                "~/secrets-gcp.json"
+                "--config",
+                "config.gcp.yaml"
             ]
         }
     ]
