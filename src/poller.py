@@ -52,7 +52,7 @@ def start_polling(path_secrets_file, polling_time, poll_once, dry_run):
     # fixme: get host/port from config file
     queue = RedisQueue(
         name="test",
-        host="localhost",
+        host="ec2-100-26-88-232.compute-1.amazonaws.com",
         port=6379
     )
 

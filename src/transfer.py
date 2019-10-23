@@ -74,10 +74,17 @@ def write_metadata(workflow_id, metadata, path_tmp):
     return path_metadata
 
 
-def transfer(path_secrets_file, workflow_id, path_tmp, dry_run):
+def determine_copy_command(destination):
 
-    # fixme: determine aws or gcp
-    copy = copy_gcp
+    if destination.startswith("s3://"):
+        return copy_aws
+    elif destination.startswith("gs://"):
+        return copy_gcp
+    else:
+        return None
+
+
+def transfer(path_secrets_file, workflow_id, path_tmp, dry_run):
 
     secrets = auth.get_secrets(path_secrets_file)
 
@@ -90,6 +97,8 @@ def transfer(path_secrets_file, workflow_id, path_tmp, dry_run):
         pipeline_type = metadata["labels"]["pipelineType"]
         base_destination = metadata["labels"]["destination"].rstrip("/")
         transfer_status = metadata["labels"]["transfer"]
+
+        copy = determine_copy_command(base_destination)
 
         logger.info(
             f"{workflow_id}: current transfer status = {transfer_status}"
@@ -158,7 +167,7 @@ def dequeue(path_secrets_file, workflow_id, path_tmp, poll_once, dry_run):
     # fixme: get host/port from config file
     queue = RedisQueue(
         name="test",
-        host="localhost",
+        host="ec2-100-26-88-232.compute-1.amazonaws.com",
         port=6379
     )
 
