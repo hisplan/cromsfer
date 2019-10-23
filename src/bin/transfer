@@ -1,0 +1,6 @@
+#!/usr/local/python3
+
+import cromsfer.transfer
+
+if __name__ == "__main__":
+    cromsfer.transfer.main()
