@@ -6,9 +6,9 @@ import time
 import subprocess
 from pprint import pprint
 
-import auth
-import cromwell_interface as client
-from redis_queue import RedisQueue
+import cromsfer.auth as auth
+import cromsfer.cromwell_interface as client
+from cromsfer.redis_queue import RedisQueue
 
 
 logger = logging.getLogger("poller")
@@ -130,7 +130,7 @@ def parse_arguments():
     return params
 
 
-if __name__ == "__main__":
+def main():
 
     params = parse_arguments()
 
@@ -147,3 +147,7 @@ if __name__ == "__main__":
     )
 
     logger.info("DONE.")
+
+
+if __name__ == "__main__":
+    main()

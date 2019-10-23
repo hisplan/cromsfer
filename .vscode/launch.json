@@ -1,0 +1,97 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: poller",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/bin/poller",
+            "console": "integratedTerminal",
+            "args": [
+                "--secrets",
+                "~/secrets-aws.json",
+                "--once",
+                "--dry-run"
+            ]
+        },        
+        {
+            "name": "Python: transfer (polling mode)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/bin/transfer",
+            "console": "integratedTerminal",
+            "args": [
+                "--secrets",
+                "~/secrets-aws.json",
+                "--once"
+            ]
+        },
+        {
+            "name": "Python: transfer (Test Workflow)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/bin/transfer",
+            "console": "integratedTerminal",
+            "args": [
+                "--secrets",
+                "~/secrets-gcp.json",
+                "--workflow-id",
+                "9782ec5f-0bb9-42b1-badd-73e2b6faf4e8",
+                "--dry-run"
+            ]
+        },
+        {
+            "name": "Python: transfer (Sharp Workflow)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/bin/transfer",
+            "console": "integratedTerminal",
+            "args": [
+                "--secrets",
+                "~/secrets-gcp.json",
+                "--workflow-id",
+                "8dad3d5a-59cd-4a45-8b41-43dd16817f2d",
+                "--dry-run"
+            ]
+        },
+        {
+            "name": "Python: transfer (Velopipe Workflow)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/bin/transfer",
+            "console": "integratedTerminal",
+            "args": [
+                "--secrets",
+                "~/secrets-gcp.json",
+                "--workflow-id",
+                "790766eb-1979-4e5a-8124-f1dbce445b2e",
+                // "--dry-run"
+            ]
+        },
+        {
+            "name": "Python: dump_for_test.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/cromsfer/dump_for_test.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--secrets",
+                "~/secrets-gcp.json"
+            ]
+        },
+        {
+            "name": "Python: remove_transfer_label.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/cromsfer/remove_transfer_label.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--secrets",
+                "~/secrets-gcp.json"
+            ]
+        }
+    ]
+}

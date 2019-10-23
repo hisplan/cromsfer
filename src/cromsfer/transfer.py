@@ -6,9 +6,9 @@ import argparse
 import json
 from pprint import pprint
 
-import auth
-import cromwell_interface as client
-from redis_queue import RedisQueue
+import cromsfer.auth as auth
+import cromsfer.cromwell_interface as client
+from cromsfer.redis_queue import RedisQueue
 
 
 logger = logging.getLogger("transfer")
@@ -126,13 +126,13 @@ def transfer(path_secrets_file, workflow_id, path_tmp, dry_run):
 
         # fixme: refactor later
         if pipeline_type == "Test":
-            from workflows import Test as x
+            from cromsfer.workflows import Test as x
             construct_src_dst_info = x.construct_src_dst_info
         elif pipeline_type == "Sharp":
-            from workflows import Sharp as x
+            from cromsfer.workflows import Sharp as x
             construct_src_dst_info = x.construct_src_dst_info
         elif pipeline_type == "Velopipe":
-            from workflows import Velopipe as x
+            from cromsfer.workflows import Velopipe as x
             construct_src_dst_info = x.construct_src_dst_info
         else:
             raise Exception("Unknown pipeline type")
@@ -177,6 +177,7 @@ def dequeue(path_secrets_file, workflow_id, path_tmp, poll_once, dry_run):
             "Waiting for a new task..."
         )
 
+        # this is a blocking call
         workflow_id = queue.get(block=True, timeout=None)
         workflow_id = workflow_id.decode()
 
@@ -194,28 +195,6 @@ def dequeue(path_secrets_file, workflow_id, path_tmp, poll_once, dry_run):
         # exit out if poll_once is true
         if poll_once:
             return
-
-
-def main(path_secrets_file, workflow_id, path_tmp, poll_once, dry_run):
-
-    if workflow_id:
-
-        transfer(
-            path_secrets_file,
-            workflow_id,
-            path_tmp,
-            dry_run
-        )
-
-    else:
-
-        dequeue(
-            path_secrets_file,
-            workflow_id,
-            path_tmp,
-            poll_once,
-            dry_run
-        )
 
 
 def parse_arguments():
@@ -272,7 +251,7 @@ def parse_arguments():
     return params
 
 
-if __name__ == "__main__":
+def main():
 
     params = parse_arguments()
 
@@ -281,12 +260,30 @@ if __name__ == "__main__":
     if params.dry_run:
         logger.info("Running in dry run mode")
 
-    main(
-        params.path_secrets_file,
-        params.workflow_id,
-        params.path_tmp,
-        params.poll_once,
-        params.dry_run
-    )
+
+    # transfer immediately if workflod_id is passed without dequeing
+    if params.workflow_id:
+
+        transfer(
+            params.path_secrets_file,
+            params.workflow_id,
+            params.path_tmp,
+            params.dry_run
+        )
+
+    else:
+
+        # check Redis if we have a work to do
+        dequeue(
+            params.path_secrets_file,
+            params.workflow_id,
+            params.path_tmp,
+            params.poll_once,
+            params.dry_run
+        )
 
     logger.info("DONE.")
+
+
+if __name__ == "__main__":
+    main()
