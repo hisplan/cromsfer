@@ -27,7 +27,7 @@ logging.getLogger('requests').setLevel(logging.CRITICAL)
 logging.getLogger('urllib3').setLevel(logging.CRITICAL)
 
 
-def start_polling(path_config, polling_time, poll_once, dry_run):
+def start_polling(path_config, poll_interval, poll_once, dry_run):
 
     config = auth.get_config(path_config)
 
@@ -41,7 +41,7 @@ def start_polling(path_config, polling_time, poll_once, dry_run):
     while True:
 
         logger.info(
-            "Getting the list of completed, but not yet transferred workflows..."
+            "Waiting for a new task..."
         )
 
         # get workflows that have been completed successfully but not yet transferred
@@ -76,7 +76,7 @@ def start_polling(path_config, polling_time, poll_once, dry_run):
         if poll_once:
             return
 
-        time.sleep(polling_time)
+        time.sleep(poll_interval)
 
 
 def parse_arguments():
@@ -89,6 +89,16 @@ def parse_arguments():
         dest="path_config",
         default="config.yaml",
         help="path to configuration file",
+        required=False
+    )
+
+    parser.add_argument(
+        "--interval",
+        action="store",
+        type=int,
+        dest="poll_interval",
+        default=600,
+        help="poll interval in seconds",
         required=False
     )
 
@@ -133,7 +143,7 @@ def main():
 
     start_polling(
         params.path_config,
-        600,
+        params.poll_interval,
         params.poll_once,
         params.dry_run
     )
