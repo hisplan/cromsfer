@@ -9,6 +9,7 @@ from pprint import pprint
 import cromsfer.version as version
 import cromsfer.auth as auth
 import cromsfer.cromwell_interface as client
+from cromsfer.constant import TransferStatus
 from cromsfer.redis_queue import RedisQueue
 
 
@@ -100,14 +101,14 @@ def transfer(config, workflow_id, path_tmp, dry_run):
         copy = determine_copy_command(base_destination)
 
         logger.info(
-            f"{workflow_id}: current transfer status = {transfer_status}"
+            f"{workflow_id}: current transfer status = '{transfer_status}'"
         )
 
         if transfer_status == "in queue":
             client.set_label(
                 config["cromwell"],
                 workflow_id,
-                "transfer", "initiated"
+                "transfer", TransferStatus.INITIATED
             )
         else:
             logger.info(
@@ -148,7 +149,7 @@ def transfer(config, workflow_id, path_tmp, dry_run):
         client.set_label(
             config["cromwell"],
             workflow_id,
-            "transfer", "done"
+            "transfer", TransferStatus.DONE
         )
 
     except Exception as ex:
@@ -157,7 +158,7 @@ def transfer(config, workflow_id, path_tmp, dry_run):
         client.set_label(
             config["cromwell"],
             workflow_id,
-            "transfer", "failed"
+            "transfer", TransferStatus.FAILED
         )
 
 
@@ -248,7 +249,7 @@ def parse_arguments():
     parser.add_argument(
         "-v", "--version",
         action="version",
-        version='cromsfer.{} v{}'.format(parser.prog, version.__version__)
+        version='{} v{}'.format(parser.prog, version.__version__)
     )
 
     # parse arguments

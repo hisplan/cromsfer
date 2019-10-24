@@ -9,6 +9,7 @@ from pprint import pprint
 import cromsfer.version as version
 import cromsfer.auth as auth
 import cromsfer.cromwell_interface as client
+from cromsfer.constant import TransferStatus
 from cromsfer.redis_queue import RedisQueue
 
 
@@ -62,15 +63,30 @@ def start_polling(path_config, poll_interval, poll_once, dry_run):
 
             workflow_id = workflow["id"]
 
-            queue.put(workflow_id)
-
-            logger.info(f"{workflow_id} queued for output transfer...")
-
+            # label as "in queue" before putting into the queue
+            # to avoid duplicates
             client.set_label(
                 config["cromwell"],
                 workflow_id,
-                "transfer", "in queue"
+                "transfer", TransferStatus.IN_QUEUE
             )
+
+            try:
+                queue.put(workflow_id)
+
+                logger.info(f"{workflow_id} queued for output transfer...")
+
+            except Exception as err:
+
+                logger.error(
+                    f"{workflow_id} couldn't be enqueued: " + str(err)
+                )
+
+                client.set_label(
+                    config["cromwell"],
+                    workflow_id,
+                    "transfer", TransferStatus.FAILED
+                )
 
         # exit out if poll_once is true
         if poll_once:
@@ -123,7 +139,7 @@ def parse_arguments():
     parser.add_argument(
         "-v", "--version",
         action="version",
-        version='cromsfer.{} v{}'.format(parser.prog, version.__version__)
+        version='{} v{}'.format(parser.prog, version.__version__)
     )
 
     # parse arguments
