@@ -3,6 +3,8 @@ import requests
 from requests.exceptions import HTTPError
 from requests.auth import HTTPBasicAuth
 
+from cromsfer.constant import TransferStatus
+
 
 def prep_api_call(secrets):
 
@@ -60,7 +62,7 @@ def get_succeeded_workflows_not_transferred(secrets):
             headers={"Accept": "application/json"},
             params={
                 "status": "Succeeded",
-                "label": "transfer:-",
+                "label": "transfer:" + TransferStatus.NONE,
             },
             auth=auth
         )
