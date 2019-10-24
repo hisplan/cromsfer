@@ -7,6 +7,7 @@ from pprint import pprint
 
 import auth
 import cromwell_interface as client
+from cromsfer.constant import TransferStatus
 
 
 def main(path_secrets_file):
@@ -25,7 +26,7 @@ def main(path_secrets_file):
         client.set_label(
             secrets,
             workflow_id,
-            "transfer", "-"
+            "transfer", TransferStatus.NONE
         )
 
 
