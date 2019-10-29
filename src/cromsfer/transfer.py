@@ -134,6 +134,9 @@ def transfer(config, workflow_id, path_tmp, dry_run):
         elif pipeline_type == "Velopipe":
             from cromsfer.workflows import Velopipe as x
             construct_src_dst_info = x.construct_src_dst_info
+        elif pipeline_type == "FastQC":
+            from cromsfer.workflows import FastQC as x
+            construct_src_dst_info = x.construct_src_dst_info
         else:
             raise Exception("Unknown pipeline type")
 
