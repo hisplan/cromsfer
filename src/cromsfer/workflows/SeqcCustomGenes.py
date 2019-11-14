@@ -63,7 +63,7 @@ def construct_src_dst_info(workflow_id, outputs, base_destination):
         elif key == "SeqcCustomGenes.outStarFiles":
             for file in outputs[key]:
                 items.append(
-                    (file, base_destination + "/genomes/")
+                    (file, base_destination + "/genome/")
                 )
 
     return items
