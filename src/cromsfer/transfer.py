@@ -137,6 +137,9 @@ def transfer(config, workflow_id, path_tmp, dry_run):
         elif pipeline_type == "FastQC":
             from cromsfer.workflows import FastQC as x
             construct_src_dst_info = x.construct_src_dst_info
+        elif pipeline_type == "SeqcCustomGenes":
+            from cromsfer.workflows import SeqcCustomGenes as x
+            construct_src_dst_info = x.construct_src_dst_info
         else:
             raise Exception("Unknown pipeline type")
 
