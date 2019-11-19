@@ -66,9 +66,9 @@ def construct_src_dst_info(workflow_id, outputs, base_destination):
                     (file, base_destination + "/STAR-index/")
                 )
         elif key.startswith("SeqcCustomGenes.outFasta"):
-            for file in outputs[key]:
-                items.append(
-                    (file, base_destination + "/genome/")
-                )
+            file = outputs[key]
+            items.append(
+                (file, base_destination + "/genome/")
+            )
 
     return items
