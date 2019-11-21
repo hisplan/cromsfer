@@ -4,6 +4,7 @@ import subprocess
 import logging
 import argparse
 import json
+import tempfile
 from pprint import pprint
 
 import cromsfer.version as version
@@ -128,18 +129,23 @@ def transfer(config, workflow_id, path_tmp, dry_run):
         if pipeline_type == "Test":
             from cromsfer.workflows import Test as x
             construct_src_dst_info = x.construct_src_dst_info
+            get_glob_list = None
         elif pipeline_type == "Sharp":
             from cromsfer.workflows import Sharp as x
             construct_src_dst_info = x.construct_src_dst_info
+            get_glob_list = x.get_glob_list
         elif pipeline_type == "Velopipe":
             from cromsfer.workflows import Velopipe as x
             construct_src_dst_info = x.construct_src_dst_info
+            get_glob_list = None
         elif pipeline_type == "FastQC":
             from cromsfer.workflows import FastQC as x
             construct_src_dst_info = x.construct_src_dst_info
+            get_glob_list = None
         elif pipeline_type == "SeqcCustomGenes":
             from cromsfer.workflows import SeqcCustomGenes as x
             construct_src_dst_info = x.construct_src_dst_info
+            get_glob_list = None
         else:
             raise Exception("Unknown pipeline type")
 
@@ -151,6 +157,13 @@ def transfer(config, workflow_id, path_tmp, dry_run):
                 copy(src, dst, dry_run)
         else:
             logger.info(f"{workflow_id}: nothing to transfer")
+
+        if get_glob_list:
+            glob_list = get_glob_list(workflow_id)
+            with tempfile.NamedTemporaryFile("wt", delete=False) as temp:
+                for item in glob_list:
+                    temp.write(item + "\n")
+            copy(temp.name, base_destination + "/glob.list", dry_run)
 
         client.set_label(
             config["cromwell"],
