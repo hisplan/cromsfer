@@ -39,7 +39,7 @@ def construct_src_dst_info(workflow_id, outputs, base_destination):
 def get_glob_list(workflow_id):
 
     items = [
-        "HashCountMatrix/*",
+        "HashedCountMatrix/*",
         "tag-list.csv"
     ]
 
