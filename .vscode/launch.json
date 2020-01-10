@@ -51,10 +51,10 @@
             "console": "integratedTerminal",
             "args": [
                 "--config",
-                "config.gcp.yaml",
+                "config.aws-local-redis.yaml",
                 "--workflow-id",
-                "8dad3d5a-59cd-4a45-8b41-43dd16817f2d",
-                "--dry-run"
+                "b4a27cc5-9b8f-49f8-830e-1a65a477c8c1",
+                // "--dry-run"
             ]
         },
         {
