@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version="0.0.9"
+version="0.0.10"
 
 docker build -t cromsfer:${version} .
 
