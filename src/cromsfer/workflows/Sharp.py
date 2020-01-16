@@ -36,6 +36,10 @@ def construct_src_dst_info(workflow_id, outputs, base_destination):
 
     for key in outputs.keys():
 
+        # skip if the value is null (e.g. File? out)
+        if not outputs[key]:
+            continue
+
         # is it a list of files from glob? (e.g. umiCountMatrix or readCountMatrix)
         if isinstance(outputs[key], list):
             # Sharp.umiCountMatrix --> umiCountMatrix
