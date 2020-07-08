@@ -42,3 +42,15 @@ $ cromsfer.poller --config config.aws-local-redis.yaml
 ```bash
 $ cromsfer.transfer  --config config.aws-local-redis.yaml
 ```
+
+### Utilities
+
+```bash
+$ export JOB_MANAGER_USERNAME=johnDoe
+$ export JOB_MANAGER_PWD=xyz123abc
+```
+
+```bash
+$ cd utils
+$ ./get-metadata.sh
+```
