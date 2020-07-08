@@ -4,11 +4,17 @@ import re
 
 def construct_src_dst_info(workflow_id, outputs, base_destination):
 
-    # {
-    #     'Velopipe.outLoom': 'gs://chunj-cromwell/cromwell-execution/Velopipe/790766eb-1979-4e5a-8124-f1dbce445b2e/call-Velocyto/glob-6e284a9cd30ed4548d4059bf33133003/sampled_679SW.loom',
-    #     'Velopipe.outBai': 'gs://chunj-cromwell/cromwell-execution/Velopipe/790766eb-1979-4e5a-8124-f1dbce445b2e/call-SortIndexTaggedBam/sampled.tagged.sorted.bam.bai',
-    #     'Velopipe.outBam': 'gs://chunj-cromwell/cromwell-execution/Velopipe/790766eb-1979-4e5a-8124-f1dbce445b2e/call-SortIndexTaggedBam/sampled.tagged.sorted.bam'
-    # }
+    # outLoom
+    # "s3://dp-lab-batch/cromwell-execution/Velopipe/8b57436f-b4eb-4341-9af1-5b9567b40170/call-Velocyto/glob-6e284a9cd30ed4548d4059bf33133003/1380_IL10R_P176_IGO_10084_4_Aligned_DOPRI.loom"
+
+    # outCBSortedTaggedBam
+    # "s3://dp-lab-batch/cromwell-execution/Velopipe/8b57436f-b4eb-4341-9af1-5b9567b40170/call-CBSortedTaggedBam/cellsorted_1380_IL10R_P176_IGO_10084_4_Aligned.out.sorted.tagged.bam"
+
+    # outPosSortedTaggedBam
+    # "s3://dp-lab-batch/cromwell-execution/Velopipe/8b57436f-b4eb-4341-9af1-5b9567b40170/call-PosSortedTaggedBam/1380_IL10R_P176_IGO_10084_4_Aligned.out.sorted.tagged.sorted.bam"
+
+    # outPosSortedTaggedBai
+    # "s3://dp-lab-batch/cromwell-execution/Velopipe/8b57436f-b4eb-4341-9af1-5b9567b40170/call-PosSortedTaggedBam/1380_IL10R_P176_IGO_10084_4_Aligned.out.sorted.tagged.sorted.bam.bai"
 
     items = list()
 
@@ -17,11 +23,15 @@ def construct_src_dst_info(workflow_id, outputs, base_destination):
     )
 
     items.append(
-        (outputs["Velopipe.outBam"], base_destination + "/")
+        (outputs["Velopipe.outCBSortedTaggedBam"], base_destination + "/")
     )
 
     items.append(
-        (outputs["Velopipe.outBai"], base_destination + "/")
+        (outputs["Velopipe.outPosSortedTaggedBam"], base_destination + "/")
+    )
+
+    items.append(
+        (outputs["Velopipe.outPosSortedTaggedBai"], base_destination + "/")
     )
 
     return items
