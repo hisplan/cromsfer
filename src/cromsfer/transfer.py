@@ -21,12 +21,12 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[
         logging.FileHandler("cromsfer.transfer.log"),
-        logging.StreamHandler(sys.stdout)
-    ]
+        logging.StreamHandler(sys.stdout),
+    ],
 )
 
-logging.getLogger('requests').setLevel(logging.CRITICAL)
-logging.getLogger('urllib3').setLevel(logging.CRITICAL)
+logging.getLogger("requests").setLevel(logging.CRITICAL)
+logging.getLogger("urllib3").setLevel(logging.CRITICAL)
 
 
 def run_command(cmd):
@@ -36,7 +36,7 @@ def run_command(cmd):
         cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False
     )
 
-    for line in iter(process.stdout.readline, b''):
+    for line in iter(process.stdout.readline, b""):
         line = line.decode(sys.stdout.encoding).rstrip() + "\r"
         logger.info(line)
 
@@ -46,9 +46,7 @@ def copy_gcp(src, dst, dry_run):
     if dry_run:
         return
 
-    run_command(
-        ["gsutil", "cp", src, dst]
-    )
+    run_command(["gsutil", "cp", src, dst])
 
 
 def copy_aws(src, dst, dry_run):
@@ -56,23 +54,17 @@ def copy_aws(src, dst, dry_run):
     if dry_run:
         return
 
-    run_command(
-        ["aws", "s3", "cp", src, dst]
-    )
+    run_command(["aws", "s3", "cp", src, dst])
 
 
 def write_metadata(workflow_id, metadata, path_tmp):
 
     os.makedirs(path_tmp, exist_ok=True)
 
-    path_metadata = os.path.join(
-        path_tmp, f"{workflow_id}-metadata.json"
-    )
+    path_metadata = os.path.join(path_tmp, f"{workflow_id}-metadata.json")
 
     with open(path_metadata, "wt") as fout:
-        fout.write(
-            json.dumps(metadata, indent=2)
-        )
+        fout.write(json.dumps(metadata, indent=2))
 
     return path_metadata
 
@@ -101,15 +93,11 @@ def transfer(config, workflow_id, path_tmp, dry_run):
 
         copy = determine_copy_command(base_destination)
 
-        logger.info(
-            f"{workflow_id}: current transfer status = '{transfer_status}'"
-        )
+        logger.info(f"{workflow_id}: current transfer status = '{transfer_status}'")
 
         if transfer_status == "in queue":
             client.set_label(
-                config["cromwell"],
-                workflow_id,
-                "transfer", TransferStatus.INITIATED
+                config["cromwell"], workflow_id, "transfer", TransferStatus.INITIATED
             )
         else:
             logger.info(
@@ -119,31 +107,39 @@ def transfer(config, workflow_id, path_tmp, dry_run):
 
         path_metadata = write_metadata(workflow_id, metadata, path_tmp)
 
-        logger.info(
-            f"{workflow_id}: transferring the metadata to {base_destination}"
-        )
+        logger.info(f"{workflow_id}: transferring the metadata to {base_destination}")
 
         copy(path_metadata, base_destination + "/", dry_run)
 
         # fixme: refactor later
         if pipeline_type == "Test":
             from cromsfer.workflows import Test as x
+
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
         elif pipeline_type == "Sharp":
             from cromsfer.workflows import Sharp as x
+
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = x.get_glob_list
         elif pipeline_type == "Velopipe":
             from cromsfer.workflows import Velopipe as x
+
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
         elif pipeline_type == "FastQC":
             from cromsfer.workflows import FastQC as x
+
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
         elif pipeline_type == "SeqcCustomGenes":
             from cromsfer.workflows import SeqcCustomGenes as x
+
+            construct_src_dst_info = x.construct_src_dst_info
+            get_glob_list = None
+        elif pipeline_type == "CellRangerVdj":
+            from cromsfer.workflows import CellRangerVdj as x
+
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
         else:
@@ -166,18 +162,14 @@ def transfer(config, workflow_id, path_tmp, dry_run):
             copy(temp.name, base_destination + "/glob.list", dry_run)
 
         client.set_label(
-            config["cromwell"],
-            workflow_id,
-            "transfer", TransferStatus.DONE
+            config["cromwell"], workflow_id, "transfer", TransferStatus.DONE
         )
 
     except Exception as ex:
         logger.error(f"{workflow_id}: " + str(ex))
 
         client.set_label(
-            config["cromwell"],
-            workflow_id,
-            "transfer", TransferStatus.FAILED
+            config["cromwell"], workflow_id, "transfer", TransferStatus.FAILED
         )
 
 
@@ -185,31 +177,20 @@ def dequeue(config, workflow_id, path_tmp, poll_once, dry_run):
 
     # fixme: get host/port from config file
     queue = RedisQueue(
-        name="cromsfer",
-        host=config["redis"]["host"],
-        port=config["redis"]["port"]
+        name="cromsfer", host=config["redis"]["host"], port=config["redis"]["port"]
     )
 
     while True:
 
-        logger.info(
-            "Waiting for a new task..."
-        )
+        logger.info("Waiting for a new task...")
 
         # this is a blocking call
         workflow_id = queue.get(block=True, timeout=None)
         workflow_id = workflow_id.decode()
 
-        logger.info(
-            f"{workflow_id}: Dequeued"
-        )
+        logger.info(f"{workflow_id}: Dequeued")
 
-        transfer(
-            config,
-            workflow_id,
-            path_tmp,
-            dry_run
-        )
+        transfer(config, workflow_id, path_tmp, dry_run)
 
         # exit out if poll_once is true
         if poll_once:
@@ -221,12 +202,13 @@ def parse_arguments():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        "-c", "--config",
+        "-c",
+        "--config",
         action="store",
         dest="path_config",
         default="config.yaml",
         help="path to configuration file",
-        required=False
+        required=False,
     )
 
     parser.add_argument(
@@ -235,7 +217,7 @@ def parse_arguments():
         dest="workflow_id",
         default=None,
         help="Workflow ID",
-        required=False
+        required=False,
     )
 
     parser.add_argument(
@@ -244,7 +226,7 @@ def parse_arguments():
         dest="dry_run",
         default=False,
         help="Dry run",
-        required=False
+        required=False,
     )
 
     parser.add_argument(
@@ -253,7 +235,7 @@ def parse_arguments():
         dest="poll_once",
         default=False,
         help="Poll only once and exit",
-        required=False
+        required=False,
     )
 
     parser.add_argument(
@@ -262,13 +244,14 @@ def parse_arguments():
         dest="path_tmp",
         help="path to temporary directory",
         default="./tmp",
-        required=False
+        required=False,
     )
 
     parser.add_argument(
-        "-v", "--version",
+        "-v",
+        "--version",
         action="version",
-        version='{} v{}'.format(parser.prog, version.__version__)
+        version="{} v{}".format(parser.prog, version.__version__),
     )
 
     # parse arguments
@@ -291,12 +274,7 @@ def main():
     # transfer immediately if workflod_id is passed without dequeing
     if params.workflow_id:
 
-        transfer(
-            config,
-            params.workflow_id,
-            params.path_tmp,
-            params.dry_run
-        )
+        transfer(config, params.workflow_id, params.path_tmp, params.dry_run)
 
     else:
 
@@ -306,7 +284,7 @@ def main():
             params.workflow_id,
             params.path_tmp,
             params.poll_once,
-            params.dry_run
+            params.dry_run,
         )
 
     logger.info("DONE.")
