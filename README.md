@@ -1,37 +1,44 @@
-# cromsfer
+# Cromwell Output Transfer (Cromsfer)
 
-Cromwell Output Transfer
+Transfers output files from Cromwell/WDL workflows to a designated S3 locations with a human-friendly directory structure. It supports:
+
+- FastQC (FASTQ QC)
+- SeqcCustomGenes (Custom Genes/Reporter Genes)
+- Sharp (Hashtag)
+- Velopipe (RNA Velocity)
 
 ## Prerequisites
 
 - AWS CLI
 - gsutil
 
-## Redis
+## Development Environment
+
+### Install Cromsfer
+
+```bash
+$ conda create -n cromsfer python=3.7.6 pip
+$ conda activate cromsfer
+$ git clone ...
+$ pip install -e .
+```
+
+### Run Redis
 
 ```bash
 $ docker run --rm -d -p 6379:6379 redis:5.0.6
 ```
 
-## Poller
+### Run the Poller Service
 
 `cromsfer.poller` picks up the workflows that have been completed, but not yet transferred.
 
 ```bash
-$ cromsfer.poller
+$ cromsfer.poller --config config.aws-local-redis.yaml
 ```
 
-## Transfer
+### Run the Transfer Service
 
 ```bash
-$ cromsfer.transfer
-```
-
-## Development
-
-```bash
-$ conda create -n cromsfer python=3.6.5 pip
-$ conda activate cromsfer
-$ git clone ...
-$ pip install -e .
+$ cromsfer.transfer  --config config.aws-local-redis.yaml
 ```
