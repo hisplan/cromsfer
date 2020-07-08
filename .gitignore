@@ -7,3 +7,4 @@ tmp/*
 config.aws.yaml
 config.gcp.yaml
 config.aws-local-redis.yaml
+packages/*
