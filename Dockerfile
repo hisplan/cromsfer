@@ -2,14 +2,14 @@ FROM ubuntu:18.04
 
 LABEL maintainer="Jaeyoung Chun (chunj@mskcc.org)"
 
-ENV CROMSFER_VERSION 0.0.12
+ENV CROMSFER_VERSION 0.0.13
 
 RUN apt-get update \
     && apt-get install --yes build-essential python3 python3-pip
 
 RUN apt-get install --yes wget zlib1g-dev libbz2-dev liblzma-dev
 
-COPY tmp/cromsfer-${CROMSFER_VERSION}.tar.gz /tmp/
+COPY packages/cromsfer-${CROMSFER_VERSION}.tar.gz /tmp/
 
 # for private
 RUN cd /tmp \
