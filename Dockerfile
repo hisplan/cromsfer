@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 LABEL maintainer="Jaeyoung Chun (chunj@mskcc.org)"
 
-ENV CROMSFER_VERSION 0.0.13
+ENV CROMSFER_VERSION 0.0.14
 
 RUN apt-get update \
     && apt-get install --yes build-essential python3 python3-pip
