@@ -6,6 +6,8 @@ Transfers output files from Cromwell/WDL workflows to a designated S3 locations 
 - SeqcCustomGenes (Custom Genes/Reporter Genes)
 - Sharp (Hashtag)
 - Velopipe (RNA Velocity)
+- Cell Ranger V(D)J
+- mkref (Generating genome index for STAR aligner)
 
 ## Prerequisites
 
