@@ -142,6 +142,11 @@ def transfer(config, workflow_id, path_tmp, dry_run):
 
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
+        elif pipeline_type == "mkref":
+            from cromsfer.workflows import mkref as x
+
+            construct_src_dst_info = x.construct_src_dst_info
+            get_glob_list = None
         else:
             raise Exception("Unknown pipeline type")
 
