@@ -8,7 +8,7 @@ ENV CROMSFER_VERSION 0.0.15
 RUN apt-get update \
     && apt-get install --yes build-essential python3 python3-pip
 
-RUN apt-get install --yes wget zlib1g-dev libbz2-dev liblzma-dev
+RUN apt-get install --yes wget curl zlib1g-dev libbz2-dev liblzma-dev
 
 # for private
 # COPY packages/cromsfer-${CROMSFER_VERSION}.tar.gz /tmp/
