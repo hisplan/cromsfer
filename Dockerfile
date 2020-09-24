@@ -2,22 +2,29 @@ FROM ubuntu:18.04
 
 LABEL maintainer="Jaeyoung Chun (chunj@mskcc.org)"
 
-ENV CROMSFER_VERSION 0.0.14
+ARG GIT_AUTH_TOKEN
+ENV CROMSFER_VERSION 0.0.15
 
 RUN apt-get update \
     && apt-get install --yes build-essential python3 python3-pip
 
 RUN apt-get install --yes wget zlib1g-dev libbz2-dev liblzma-dev
 
-COPY packages/cromsfer-${CROMSFER_VERSION}.tar.gz /tmp/
-
 # for private
+# COPY packages/cromsfer-${CROMSFER_VERSION}.tar.gz /tmp/
+# RUN cd /tmp \
+#     && tar xvzf cromsfer-${CROMSFER_VERSION}.tar.gz \
+#     && cd cromsfer-${CROMSFER_VERSION} \
+#     && pip3 install .
+
+# for private repo
 RUN cd /tmp \
-    && tar xvzf cromsfer-${CROMSFER_VERSION}.tar.gz \
-    && cd cromsfer-${CROMSFER_VERSION} \
+    && curl -L -o cromsfer.tgz -H "Authorization: token ${GIT_AUTH_TOKEN}" https://github.com/hisplan/cromsfer/archive/v${CROMSFER_VERSION}.tar.gz \
+    && tar xvzf cromsfer.tgz \
+    && cd cromsfer \
     && pip3 install .
 
-# for public
+# for public repo
 # RUN cd /tmp \
 #     && wget https://github.com/hisplan/cromsfer/releases/tag/v${CROMSFER_VERSION} \
 #     && tar xvzf v${CROMSFER_VERSION}.tar.gz \
