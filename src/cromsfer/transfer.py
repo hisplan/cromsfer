@@ -127,6 +127,11 @@ def transfer(config, workflow_id, path_tmp, dry_run):
 
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
+        elif pipeline_type == "Velopipe2":
+            from cromsfer.workflows import Velopipe2 as x
+
+            construct_src_dst_info = x.construct_src_dst_info
+            get_glob_list = None
         elif pipeline_type == "FastQC":
             from cromsfer.workflows import FastQC as x
 
