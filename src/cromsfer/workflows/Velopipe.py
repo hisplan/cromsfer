@@ -4,20 +4,10 @@ import re
 
 def construct_src_dst_info(workflow_id, outputs, base_destination):
 
-    # outCBSortedTaggedBam
-    # "s3://dp-lab-batch/cromwell-execution/Velopipe2/f8622453-33a1-428b-8eb1-b24c1800214f/call-CBSortedTaggedBam/cellsorted_MPL_CD40.tagged.bam"
-
-    # outLoom
-    # "s3://dp-lab-batch/cromwell-execution/Velopipe2/f8622453-33a1-428b-8eb1-b24c1800214f/call-Velocyto/glob-6e284a9cd30ed4548d4059bf33133003/MPL_CD40_IL001.loom"
-
-    # outPosSortedTaggedBai
-    # "s3://dp-lab-batch/cromwell-execution/Velopipe2/f8622453-33a1-428b-8eb1-b24c1800214f/call-MergeBam/MPL_CD40.tagged.bai"
-
-    # outPosSortedTaggedBam
-    # "s3://dp-lab-batch/cromwell-execution/Velopipe2/f8622453-33a1-428b-8eb1-b24c1800214f/call-MergeBam/MPL_CD40.tagged.bam"
-
-    # outTagBamLog
-    # "s3://dp-lab-batch/cromwell-execution/Velopipe2/f8622453-33a1-428b-8eb1-b24c1800214f/call-TagBam2/tag_bam.log"
+    # "Velopipe.outPosSortedTaggedBai": "s3://dp-lab-batch/cromwell-execution/Velopipe/313c0570-7565-4eaf-823d-969e3fc5a8ae/call-PosSortedTaggedBam/1378_CMI_P176_IGO_10084_2_Aligned.out.sorted.tagged.sorted.bam.bai",
+    # "Velopipe.outLoom": "s3://dp-lab-batch/cromwell-execution/Velopipe/313c0570-7565-4eaf-823d-969e3fc5a8ae/call-Velocyto/glob-6e284a9cd30ed4548d4059bf33133003/1378_CMI_P176_IGO_10084_2_Aligned_KHU2G.loom",
+    # "Velopipe.outCBSortedTaggedBam": "s3://dp-lab-batch/cromwell-execution/Velopipe/313c0570-7565-4eaf-823d-969e3fc5a8ae/call-CBSortedTaggedBam/cellsorted_1378_CMI_P176_IGO_10084_2_Aligned.out.sorted.tagged.bam",
+    # "Velopipe.outPosSortedTaggedBam": "s3://dp-lab-batch/cromwell-execution/Velopipe/313c0570-7565-4eaf-823d-969e3fc5a8ae/call-PosSortedTaggedBam/1378_CMI_P176_IGO_10084_2_Aligned.out.sorted.tagged.sorted.bam"
 
     items = list()
 
@@ -35,14 +25,6 @@ def construct_src_dst_info(workflow_id, outputs, base_destination):
 
     items.append(
         (outputs["Velopipe.outPosSortedTaggedBai"], base_destination + "/")
-    )
-
-    items.append(
-        (outputs["Velopipe.outTagBamLog"], base_destination + "/")
-    )
-
-    items.append(
-        (outputs["Velopipe.outVelocytoLog"], base_destination + "/")
     )
 
     return items
