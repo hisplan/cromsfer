@@ -10,18 +10,11 @@ RUN apt-get update \
 
 RUN apt-get install --yes wget curl zlib1g-dev libbz2-dev liblzma-dev
 
-# for private
-# COPY packages/cromsfer-${CROMSFER_VERSION}.tar.gz /tmp/
-# RUN cd /tmp \
-#     && tar xvzf cromsfer-${CROMSFER_VERSION}.tar.gz \
-#     && cd cromsfer-${CROMSFER_VERSION} \
-#     && pip3 install .
-
 # for private repo
 RUN cd /tmp \
     && curl -L -o cromsfer.tgz -H "Authorization: token ${GIT_AUTH_TOKEN}" https://github.com/hisplan/cromsfer/archive/v${CROMSFER_VERSION}.tar.gz \
     && tar xvzf cromsfer.tgz \
-    && cd cromsfer \
+    && cd cromsfer-${CROMSFER_VERSION} \
     && pip3 install .
 
 # for public repo
