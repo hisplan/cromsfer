@@ -54,5 +54,5 @@ $ export JOB_MANAGER_PWD=xyz123abc
 
 ```bash
 $ cd utils
-$ ./get-metadata.sh
+$ ./get-metadata.sh -w 4bb895a2-dc44-4d6d-94ca-1294452e1bf8
 ```
