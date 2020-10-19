@@ -2,7 +2,11 @@
 
 if [ -z "$JOB_MANAGER_USERNAME" ] || [ -z "$JOB_MANAGER_PWD" ]
 then
-    echo "JOB_MANAGER_USERNAME and/or JOB_MANAGER_PWD are not configured!"
+    echo "Credentials required!"
+    echo
+    echo "export JOB_MANAGER_USERNAME=<put-your-username-here>"
+    echo "export JOB_MANAGER_PWD=<put-your-password-here>"
+    echo
     exit 1
 fi
 
