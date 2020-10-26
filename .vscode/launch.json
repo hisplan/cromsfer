@@ -53,7 +53,7 @@
                 "--config",
                 "config.aws-local-redis.yaml",
                 "--workflow-id",
-                "b4a27cc5-9b8f-49f8-830e-1a65a477c8c1",
+                "36faf89a-e615-4baa-84a3-3de42994ff9f",
                 // "--dry-run"
             ]
         },
@@ -65,9 +65,9 @@
             "console": "integratedTerminal",
             "args": [
                 "--config",
-                "config.gcp.yaml",
+                "config.aws-local-redis.yaml",
                 "--workflow-id",
-                "790766eb-1979-4e5a-8124-f1dbce445b2e",
+                "f8622453-33a1-428b-8eb1-b24c1800214f",
                 // "--dry-run"
             ]
         },
