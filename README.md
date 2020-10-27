@@ -19,7 +19,7 @@ Transfers output files from Cromwell/WDL workflows to a designated S3 locations 
 ### Install Cromsfer
 
 ```bash
-$ conda create -n cromsfer python=3.7.6 pip
+$ conda create -n cromsfer python=3.7.7 pip
 $ conda activate cromsfer
 $ git clone ...
 $ pip install -e .

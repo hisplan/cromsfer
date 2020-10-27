@@ -58,6 +58,20 @@
             ]
         },
         {
+            "name": "Python: transfer (CITE-seq Workflow)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/bin/cromsfer.transfer",
+            "console": "integratedTerminal",
+            "args": [
+                "--config",
+                "config.aws-local-redis.yaml",
+                "--workflow-id",
+                "eb5f81d3-cb16-4436-80f0-c8c0a2ed04d6",
+                // "--dry-run"
+            ]
+        },        
+        {
             "name": "Python: transfer (Velopipe Workflow)",
             "type": "python",
             "request": "launch",
