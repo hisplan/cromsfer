@@ -3,7 +3,7 @@ FROM ubuntu:18.04
 LABEL maintainer="Jaeyoung Chun (chunj@mskcc.org)"
 
 ARG GIT_AUTH_TOKEN
-ENV CROMSFER_VERSION 0.0.16
+ENV CROMSFER_VERSION 0.0.17
 
 RUN apt-get update \
     && apt-get install --yes build-essential python3 python3-pip
