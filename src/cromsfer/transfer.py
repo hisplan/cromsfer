@@ -128,6 +128,7 @@ def transfer(config, workflow_id, path_tmp, dry_run):
             from cromsfer.workflows import CiteSeq as x
 
             construct_src_dst_info = x.construct_src_dst_info
+            get_glob_list = None
 
         elif pipeline_type == "Velopipe":
             from cromsfer.workflows import Velopipe as x
@@ -166,7 +167,7 @@ def transfer(config, workflow_id, path_tmp, dry_run):
             get_glob_list = None
 
         else:
-            raise Exception("Unknown pipeline type")
+            raise Exception(f"Unknown pipeline type - {pipeline_type}")
 
         items = construct_src_dst_info(workflow_id, outputs, base_destination)
 
