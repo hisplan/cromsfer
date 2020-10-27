@@ -117,41 +117,54 @@ def transfer(config, workflow_id, path_tmp, dry_run):
 
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
+
         elif pipeline_type == "Sharp":
             from cromsfer.workflows import Sharp as x
 
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = x.get_glob_list
+
+        elif pipeline_type == "CITE-seq":
+            from cromsfer.workflows import CiteSeq as x
+
+            construct_src_dst_info = x.construct_src_dst_info
+
         elif pipeline_type == "Velopipe":
             from cromsfer.workflows import Velopipe as x
 
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
+
         elif pipeline_type == "Velopipe2":
             from cromsfer.workflows import Velopipe2 as x
 
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
+
         elif pipeline_type == "FastQC":
             from cromsfer.workflows import FastQC as x
 
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
+
         elif pipeline_type == "SeqcCustomGenes":
             from cromsfer.workflows import SeqcCustomGenes as x
 
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
+
         elif pipeline_type == "CellRangerVdj":
             from cromsfer.workflows import CellRangerVdj as x
 
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
+
         elif pipeline_type == "mkref":
             from cromsfer.workflows import mkref as x
 
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
+
         else:
             raise Exception("Unknown pipeline type")
 
