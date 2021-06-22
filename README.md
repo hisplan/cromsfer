@@ -5,9 +5,10 @@ Transfers output files from Cromwell/WDL workflows to a designated S3 locations 
 - FastQC (FASTQ QC)
 - SeqcCustomGenes (Custom Genes/Reporter Genes)
 - Sharp (Hashtag)
-- CITE-seq
+- Sharp (CITE-seq)
 - Velopipe (RNA Velocity)
 - Cell Ranger V(D)J
+- Cell Ranger GEX
 - mkref (Generating genome index for STAR aligner)
 
 ## Prerequisites
@@ -53,7 +54,23 @@ $ export JOB_MANAGER_USERNAME=johnDoe
 $ export JOB_MANAGER_PWD=xyz123abc
 ```
 
+Getting the metadata for a given workflow:
+
 ```bash
 $ cd utils
 $ ./get-metadata.sh -w 4bb895a2-dc44-4d6d-94ca-1294452e1bf8
 ```
+
+Resetting the transfer status (i.e. "`-`")
+
+```bash
+$ cd utils
+$ ./transfer-reset.sh -w 4bb895a2-dc44-4d6d-94ca-1294452e1bf8
+```
+
+## Deployment
+
+1. Make sure you increment the version number (`src/cromsfer/version.py`).
+1. Push all the changes into the GitHub repository.
+1. Create a release tag in the GitHub repository.
+1. Build a docker image.
