@@ -6,7 +6,7 @@ then
     exit 1
 fi
 
-version="0.0.18"
+version="0.0.19"
 
 docker build --build-arg GIT_AUTH_TOKEN -t cromsfer:${version} .
 
