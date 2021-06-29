@@ -33,6 +33,10 @@ def construct_src_dst_info(workflow_id, outputs, base_destination):
         (outputs["Velopipe2.outTagBamLog"], base_destination + "/")
     )
 
+    items.append(
+        (outputs["Velopipe2.outTagBamStats"], base_destination + "/")        
+    )
+
     # hack: the v2-beta pipeline might not have Velopipe2.outVelocytoLog.
     # let's skip in that case.
     if "Velopipe2.outVelocytoLog" in outputs:
