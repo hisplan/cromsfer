@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 if [ -z ${GIT_AUTH_TOKEN} ]
 then
