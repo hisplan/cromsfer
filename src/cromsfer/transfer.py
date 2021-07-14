@@ -166,8 +166,20 @@ def transfer(config, workflow_id, path_tmp, dry_run):
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
 
+        elif pipeline_type == "CellRangerARC":
+            from cromsfer.workflows import CellRangerArc as x
+
+            construct_src_dst_info = x.construct_src_dst_info
+            get_glob_list = None
+
         elif pipeline_type == "mkref":
             from cromsfer.workflows import mkref as x
+
+            construct_src_dst_info = x.construct_src_dst_info
+            get_glob_list = None
+
+        elif pipeline_type == "ArchRSA":
+            from cromsfer.workflows import ArchRSA as x
 
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
