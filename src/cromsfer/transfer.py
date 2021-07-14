@@ -119,7 +119,7 @@ def transfer(config, workflow_id, path_tmp, dry_run):
             get_glob_list = None
 
         elif pipeline_type == "Sharp" or pipeline_type == "Hashtag":
-            from cromsfer.workflows import Sharp as x
+            from cromsfer.workflows import Hashtag as x
 
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = x.get_glob_list

@@ -9,6 +9,8 @@ Transfers output files from Cromwell/WDL workflows to a designated S3 locations 
 - Velopipe (RNA Velocity)
 - Cell Ranger V(D)J
 - Cell Ranger GEX
+- Cell Ranger ARC
+- ArchR Stand Alone (aka. ArchRSA)
 - mkref (Generating genome index for STAR aligner)
 
 ## Prerequisites
