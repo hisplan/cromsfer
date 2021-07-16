@@ -2,7 +2,7 @@
 
 if [ -z ${GIT_AUTH_TOKEN} ]
 then
-    echo "GIT_AUTH_TOKEN must be set in order to download ArchR from the private repository."
+    echo "GIT_AUTH_TOKEN must be set in order to download Cromsfer from the private repository."
     exit 1
 fi
 
