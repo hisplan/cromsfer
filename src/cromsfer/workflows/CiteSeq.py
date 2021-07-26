@@ -21,29 +21,29 @@ def construct_src_dst_info(workflow_id, outputs, base_destination):
 
     items = list()
 
-    for key in outputs.keys():
+    items.append(
+        (outputs["CiteSeq.countReport"], base_destination + "/counts/")
+    )
 
-        # skip if the value is null (e.g. File? out)
-        if not outputs[key]:
-            continue
+    for file in outputs["CiteSeq.umiCountMatrix"]:
+        items.append(
+            (file, base_destination + "/counts/umis/")
+        )
 
-        # is it a list of files from glob? (e.g. umiCountMatrix or readCountMatrix)
-        if isinstance(outputs[key], list):
-            # CiteSeq.umiCountMatrix --> umiCountMatrix
-            subfolder = key.split(".")[1]
-            for src in outputs[key]:
-                match = re.search(workflow_id + "/call-(.*?)/", src)
-                if match:
-                    items.append(
-                        (src, base_destination + "/" + match.group(1) + "/" + subfolder + "/")
-                    )
-        else:
-            # it's a single file
-            src = outputs[key]
-            match = re.search(workflow_id + ".*/call-(.*)$", src)
-            if match:
-                items.append(
-                    (src, base_destination + "/" + match.group(1))
-                )
+    for file in outputs["CiteSeq.readCountMatrix"]:
+        items.append(
+            (file, base_destination + "/counts/reads/")
+        )
+
+    items.append(
+        (outputs["CiteSeq.fastQCR1Html"], base_destination + "/fastqc/")
+    )
+    items.append(
+        (outputs["CiteSeq.fastQCR2Html"], base_destination + "/fastqc/")
+    )
+
+    items.append(
+        (outputs["CiteSeq.adata"], base_destination + "/")
+    )
 
     return items
