@@ -122,10 +122,16 @@ def transfer(config, workflow_id, path_tmp, dry_run):
             from cromsfer.workflows import Hashtag as x
 
             construct_src_dst_info = x.construct_src_dst_info
-            get_glob_list = x.get_glob_list
+            get_glob_list = None
 
         elif pipeline_type == "CITE-seq":
             from cromsfer.workflows import CiteSeq as x
+
+            construct_src_dst_info = x.construct_src_dst_info
+            get_glob_list = None
+
+        elif pipeline_type == "ASAP-seq":
+            from cromsfer.workflows import AsapSeq as x
 
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
