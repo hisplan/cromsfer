@@ -8,7 +8,7 @@ def construct_src_dst_info(workflow_id, outputs, base_destination):
     # "CellRangerArc.cloupe": "s3://dp-lab-gwf-core/cromwell-execution/CellRangerArc/09b8220a-6c24-4e69-b2e2-4e7856e5ddbd/call-Count/DACE657_mKate2/outs/cloupe.cloupe",
     # "CellRangerArc.peaks": "s3://dp-lab-gwf-core/cromwell-execution/CellRangerArc/09b8220a-6c24-4e69-b2e2-4e7856e5ddbd/call-Count/DACE657_mKate2/outs/atac_peaks.bed",
     # "CellRangerArc.webSummary": "s3://dp-lab-gwf-core/cromwell-execution/CellRangerArc/09b8220a-6c24-4e69-b2e2-4e7856e5ddbd/call-Count/DACE657_mKate2/outs/web_summary.html",
-    # "CellRangerArc.pipestance": "s3://dp-lab-gwf-core/cromwell-execution/CellRangerArc/09b8220a-6c24-4e69-b2e2-4e7856e5ddbd/call-Count/DACE657_mKate2/DACE657_mKate2.mri.tgz",
+    # "CellRangerArc.pipestanceMeta": "s3://dp-lab-gwf-core/cromwell-execution/CellRangerArc/09b8220a-6c24-4e69-b2e2-4e7856e5ddbd/call-Count/DACE657_mKate2/DACE657_mKate2.mri.tgz",
     # "CellRangerArc.atacBai": "s3://dp-lab-gwf-core/cromwell-execution/CellRangerArc/09b8220a-6c24-4e69-b2e2-4e7856e5ddbd/call-Count/DACE657_mKate2/outs/atac_possorted_bam.bam.bai",
     # "CellRangerArc.libraries": "s3://dp-lab-gwf-core/cromwell-execution/CellRangerArc/09b8220a-6c24-4e69-b2e2-4e7856e5ddbd/call-Count/libraries.csv",
     # "CellRangerArc.peakAnnotation": "s3://dp-lab-gwf-core/cromwell-execution/CellRangerArc/09b8220a-6c24-4e69-b2e2-4e7856e5ddbd/call-Count/DACE657_mKate2/outs/atac_peak_annotation.tsv",
@@ -28,7 +28,6 @@ def construct_src_dst_info(workflow_id, outputs, base_destination):
     #     "s3://dp-lab-gwf-core/cromwell-execution/CellRangerArc/09b8220a-6c24-4e69-b2e2-4e7856e5ddbd/call-Count/glob-16b07a2bb352afad0109608d41386e21/matrix.mtx.gz"
     # ],
     # "CellRangerArc.atacFragments": "s3://dp-lab-gwf-core/cromwell-execution/CellRangerArc/09b8220a-6c24-4e69-b2e2-4e7856e5ddbd/call-Count/DACE657_mKate2/outs/atac_fragments.tsv.gz",
-    # "CellRangerArc.debugFile": "s3://dp-lab-gwf-core/cromwell-execution/CellRangerArc/09b8220a-6c24-4e69-b2e2-4e7856e5ddbd/call-Count/debug.tgz",
     # "CellRangerArc.gexBam": "s3://dp-lab-gwf-core/cromwell-execution/CellRangerArc/09b8220a-6c24-4e69-b2e2-4e7856e5ddbd/call-Count/DACE657_mKate2/outs/gex_possorted_bam.bam",
     # "CellRangerArc.cutSites": "s3://dp-lab-gwf-core/cromwell-execution/CellRangerArc/09b8220a-6c24-4e69-b2e2-4e7856e5ddbd/call-Count/DACE657_mKate2/outs/atac_cut_sites.bigwig",
     # "CellRangerArc.atacFragmentsIndex": "s3://dp-lab-gwf-core/cromwell-execution/CellRangerArc/09b8220a-6c24-4e69-b2e2-4e7856e5ddbd/call-Count/DACE657_mKate2/outs/atac_fragments.tsv.gz.tbi",
@@ -37,7 +36,6 @@ def construct_src_dst_info(workflow_id, outputs, base_destination):
 
     items = list()
 
-    # copy everything to /outs
     for key in outputs.keys():
 
         # is it a list of files from glob? (e.g. CellRangerArc.filteredFeatureBCMatrix)
@@ -49,10 +47,10 @@ def construct_src_dst_info(workflow_id, outputs, base_destination):
             else:
                 raise Exception("Unknown key: " + key)
             for file in outputs[key]:
-                items.append((file, f"{base_destination}/outs/{subkey}/"))
+                items.append((file, f"{base_destination}/{subkey}/"))
         else:
             # it's a single file
             file = outputs[key]
-            items.append((file, base_destination + "/outs/"))
+            items.append((file, base_destination + "/"))
 
     return items
