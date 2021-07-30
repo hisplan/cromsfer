@@ -28,7 +28,6 @@ def construct_src_dst_info(workflow_id, outputs, base_destination):
 
     items = list()
 
-    # copy everything to /outs
     for key in outputs.keys():
 
         # is it a list of files from glob? (e.g. CellRangerGex.filteredFeatureBarcodeMatrix)
@@ -40,10 +39,10 @@ def construct_src_dst_info(workflow_id, outputs, base_destination):
             else:
                 raise Exception("Unknown key: " + key)
             for file in outputs[key]:
-                items.append((file, f"{base_destination}/outs/{subkey}/"))
+                items.append((file, f"{base_destination}/{subkey}/"))
         else:
             # it's a single file
             file = outputs[key]
-            items.append((file, base_destination + "/outs/"))
+            items.append((file, base_destination + "/"))
 
     return items

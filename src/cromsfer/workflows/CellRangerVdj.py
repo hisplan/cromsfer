@@ -45,16 +45,15 @@ def construct_src_dst_info(workflow_id, outputs, base_destination):
     items = list()
 
     # we will flatten the hirarchical structure
-    # copy everything to /outs
     for key in outputs.keys():
 
         # is it a list of files from glob? (e.g. fastqFiles)
         if isinstance(outputs[key], list):
             for file in outputs[key]:
-                items.append((file, base_destination + "/outs/"))
+                items.append((file, base_destination + "/"))
         else:
             # it's a single file
             file = outputs[key]
-            items.append((file, base_destination + "/outs/"))
+            items.append((file, base_destination + "/"))
 
     return items
