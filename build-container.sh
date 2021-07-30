@@ -6,9 +6,12 @@ then
     exit 1
 fi
 
-version="0.0.22"
+version="0.0.23"
 
-docker build --build-arg GIT_AUTH_TOKEN -t cromsfer:${version} .
+docker build \
+    --build-arg GIT_AUTH_TOKEN=${GIT_AUTH_TOKEN} \
+    --build-arg CROMSFER_VERSION=${version} \
+    -t cromsfer:${version} .
 
 docker login
 docker tag cromsfer:${version} hisplan/cromsfer:${version}
