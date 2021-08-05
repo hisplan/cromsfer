@@ -64,23 +64,16 @@ def construct_src_dst_info(workflow_id, outputs, base_destination):
         (outputs["Hashtag.adataFinal"], base_destination + "/")
     )
 
-    items.append(
-        (outputs["Hashtag.combinedCountMatrix"], base_destination + "/")
-    )
-    items.append(
-        (outputs["Hashtag.combinedClass"], base_destination + "/")
-    )
+    # optional output
+    if outputs["Hashtag.combinedCountMatrix"]:
+        items.append(
+            (outputs["Hashtag.combinedCountMatrix"], base_destination + "/")
+        )
+
+    # optional output
+    if outputs["Hashtag.combinedClass"]:
+        items.append(
+            (outputs["Hashtag.combinedClass"], base_destination + "/")
+        )
 
     return items
-
-
-# def get_glob_list(workflow_id):
-
-#     items = [
-#         "CiteSeqCount/*",
-#         "HashedCountMatrix/*",
-#         "Preprocess/*",
-#         "tag-list.csv"
-#     ]
-
-#     return None
