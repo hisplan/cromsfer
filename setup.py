@@ -11,17 +11,17 @@ setuptools.setup(
     version=__version__,
     author="Jaeyoung Chun",
     author_email="chunj@mskcc.org",
-    description="cromsfer",    
+    description="cromsfer",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/hisplan/cromwell-output-transfer",    
+    url="https://github.com/hisplan/cromsfer",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.6",
-    # packages=setuptools.find_packages(),    
+    # packages=setuptools.find_packages(),
     packages=[
         "cromsfer",
         "cromsfer.workflows"
@@ -32,8 +32,8 @@ setuptools.setup(
         "src/bin/cromsfer.transfer"
     ],
     install_requires=[
-        "requests",
-        "redis==3.3.11",
-        "PyYAML==5.1.2"
+        "requests>=2.24.0",
+        "redis>=3.3.11",
+        "PyYAML>=5.1.2"
     ]
 )
