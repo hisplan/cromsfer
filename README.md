@@ -4,7 +4,7 @@ Transfers output files from Cromwell/WDL workflows to a designated S3 locations 
 
 - FastQC (FASTQ QC)
 - SEQC Custom Genes (Transgenes/Reporter Genes)
-- Sharp (Hashtag)
+- Sharp (Hashtag and CellPlex)
 - Sharp (CITE-seq)
 - Sharp (ASAP-seq)
 - Velopipe (RNA Velocity)
