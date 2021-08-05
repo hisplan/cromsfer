@@ -6,7 +6,7 @@ then
     exit 1
 fi
 
-version="0.0.23"
+version=`python -c "exec(open('src/cromsfer/version.py').read()); print(__version__)"`
 
 docker build \
     --build-arg GIT_AUTH_TOKEN=${GIT_AUTH_TOKEN} \
