@@ -12,6 +12,7 @@ Transfers output files from Cromwell/WDL workflows to a designated S3 locations 
 - Cell Ranger GEX
 - Cell Ranger ATAC
 - Cell Ranger ARC
+- Cell Ranger CellPlex
 - ArchR Stand Alone (aka. ArchRSA)
 - mkref (Generating genome index for STAR aligner)
 
@@ -28,7 +29,7 @@ Transfers output files from Cromwell/WDL workflows to a designated S3 locations 
 $ conda create -n cromsfer python=3.7.7 pip
 $ conda activate cromsfer
 $ git clone ...
-$ pip install -e .
+$ pip install -e .[dev]
 ```
 
 ### Run Redis
