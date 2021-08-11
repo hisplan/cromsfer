@@ -86,6 +86,20 @@
             ]
         },
         {
+            "name": "Python: transfer (CellRangerCellPlex Workflow)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/bin/cromsfer.transfer",
+            "console": "integratedTerminal",
+            "args": [
+                "--config",
+                "config.aws-local-redis.yaml",
+                "--workflow-id",
+                "464065b1-ae2a-4157-8361-e95355c9f0ce",
+                // "--dry-run"
+            ]
+        },        
+        {
             "name": "Python: dump_for_test.py",
             "type": "python",
             "request": "launch",
