@@ -35,5 +35,11 @@ setuptools.setup(
         "requests>=2.24.0",
         "redis>=3.3.11",
         "PyYAML>=5.1.2"
-    ]
+    ],
+    extras_require={
+        "dev": [
+            "pytest",
+            "black>=21.7b0"
+        ]
+    }    
 )
