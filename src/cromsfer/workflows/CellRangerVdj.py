@@ -21,7 +21,7 @@ def construct_src_dst_info(workflow_id, outputs, base_destination):
     #       "s3://dp-lab-batch/cromwell-execution/CellRangerVdj/4b41842f-2ed0-49cb-a9b6-d8871b019fae/call-Vdj/glob-02f73c8de85e32cc5d3abcebfa9335e4/consensus_annotations.json",
     #       "s3://dp-lab-batch/cromwell-execution/CellRangerVdj/4b41842f-2ed0-49cb-a9b6-d8871b019fae/call-Vdj/glob-02f73c8de85e32cc5d3abcebfa9335e4/filtered_contig_annotations.csv"
     #     ],
-    #     "CellRangerVdj.pipestance": "s3://dp-lab-batch/cromwell-execution/CellRangerVdj/4b41842f-2ed0-49cb-a9b6-d8871b019fae/call-Vdj/Lmgp66_tet_replicate/Lmgp66_tet_replicate.mri.tgz",
+    #     "CellRangerVdj.pipestanceMeta": "s3://dp-lab-batch/cromwell-execution/CellRangerVdj/4b41842f-2ed0-49cb-a9b6-d8871b019fae/call-Vdj/Lmgp66_tet_replicate/Lmgp66_tet_replicate.mri.tgz",
     #     "CellRangerVdj.vloupe": "s3://dp-lab-batch/cromwell-execution/CellRangerVdj/4b41842f-2ed0-49cb-a9b6-d8871b019fae/call-Vdj/Lmgp66_tet_replicate/outs/vloupe.vloupe",
     #     "CellRangerVdj.fastaFiles": [
     #       "s3://dp-lab-batch/cromwell-execution/CellRangerVdj/4b41842f-2ed0-49cb-a9b6-d8871b019fae/call-Vdj/glob-5ea969edb8af2b8b04e1b1ac96759bb3/all_contig.fasta",
