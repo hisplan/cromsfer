@@ -156,8 +156,8 @@ def transfer(config, workflow_id, path_tmp, dry_run):
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
 
-        elif pipeline_type == "SeqcCustomGenes":
-            from cromsfer.workflows import SeqcCustomGenes as x
+        elif pipeline_type == "StarTransgenes":
+            from cromsfer.workflows import StarTransgenes as x
 
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
