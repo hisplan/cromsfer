@@ -13,7 +13,7 @@ def construct_src_dst_info(workflow_id, outputs, base_destination):
     # "CellRangerArc.libraries": "s3://dp-lab-gwf-core/cromwell-execution/CellRangerArc/09b8220a-6c24-4e69-b2e2-4e7856e5ddbd/call-Count/libraries.csv",
     # "CellRangerArc.peakAnnotation": "s3://dp-lab-gwf-core/cromwell-execution/CellRangerArc/09b8220a-6c24-4e69-b2e2-4e7856e5ddbd/call-Count/DACE657_mKate2/outs/atac_peak_annotation.tsv",
     # "CellRangerArc.filteredFeatureBCMatrixH5": "s3://dp-lab-gwf-core/cromwell-execution/CellRangerArc/09b8220a-6c24-4e69-b2e2-4e7856e5ddbd/call-Count/DACE657_mKate2/outs/filtered_feature_bc_matrix.h5",
-    # "CellRangerArc.outAnalysis": "s3://dp-lab-gwf-core/cromwell-execution/CellRangerArc/09b8220a-6c24-4e69-b2e2-4e7856e5ddbd/call-Count/DACE657_mKate2/outs/analysis.tgz",
+    # "CellRangerArc.secondaryAnalysis": "s3://dp-lab-gwf-core/cromwell-execution/CellRangerArc/09b8220a-6c24-4e69-b2e2-4e7856e5ddbd/call-Count/DACE657_mKate2/outs/analysis.tgz",
     # "CellRangerArc.perBarcodeMetrics": "s3://dp-lab-gwf-core/cromwell-execution/CellRangerArc/09b8220a-6c24-4e69-b2e2-4e7856e5ddbd/call-Count/DACE657_mKate2/outs/per_barcode_metrics.csv",
     # "CellRangerArc.atacBam": "s3://dp-lab-gwf-core/cromwell-execution/CellRangerArc/09b8220a-6c24-4e69-b2e2-4e7856e5ddbd/call-Count/DACE657_mKate2/outs/atac_possorted_bam.bam",
     # "CellRangerArc.filteredFeatureBCMatrix": [
