@@ -23,12 +23,12 @@ def get_all_workflows(secrets):
 
     try:
         response = requests.get(
-            url=f"{base_url}/query",
-            headers={"Accept": "application/json"},
-            auth=auth
+            url=f"{base_url}/query", headers={"Accept": "application/json"}, auth=auth
         )
 
-        # if response.status_code == 200:
+        if response.status_code == 401:
+            raise Exception("Unauthorized access!")
+
         data = response.json()
 
         return data
@@ -64,10 +64,12 @@ def get_succeeded_workflows_not_transferred(secrets):
                 "status": "Succeeded",
                 "label": "transfer:" + TransferStatus.NONE,
             },
-            auth=auth
+            auth=auth,
         )
 
-        # if response.status_code == 200:
+        if response.status_code == 401:
+            raise Exception("Unauthorized access!")
+
         data = response.json()
 
         return data
@@ -83,15 +85,14 @@ def set_label(secrets, workflow_id, key, value):
     try:
         response = requests.patch(
             url=f"{base_url}/{workflow_id}/labels",
-            headers={
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
+            headers={"Content-Type": "application/json", "Accept": "application/json"},
             json={key: value},
-            auth=auth
+            auth=auth,
         )
 
-        # if response.status_code == 200:
+        if response.status_code == 401:
+            raise Exception("Unauthorized access!")
+
         data = response.json()
 
         return data
@@ -107,14 +108,13 @@ def get_metadata(secrets, workflow_id):
     try:
         response = requests.patch(
             url=f"{base_url}/{workflow_id}/metadata",
-            headers={
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            auth=auth
+            headers={"Content-Type": "application/json", "Accept": "application/json"},
+            auth=auth,
         )
 
-        # if response.status_code == 200:
+        if response.status_code == 401:
+            raise Exception("Unauthorized access!")
+
         data = response.json()
 
         return data
