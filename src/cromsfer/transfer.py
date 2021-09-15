@@ -114,8 +114,8 @@ def transfer(config, workflow_id, path_tmp, dry_run):
         logger.info(f"{workflow_id}: pipeline type={pipeline_type}")
 
         # fixme: refactor later
-        if pipeline_type == "Test":
-            from cromsfer.workflows import Test as x
+        if pipeline_type == "HelloWorld":
+            from cromsfer.workflows import HelloWorld as x
 
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
