@@ -1,10 +1,10 @@
 #!/bin/bash -e
 
-if [ -z ${GIT_AUTH_TOKEN} ]
-then
-    echo "GIT_AUTH_TOKEN must be set in order to download Cromsfer from the private repository."
-    exit 1
-fi
+# if [ -z ${GIT_AUTH_TOKEN} ]
+# then
+#     echo "GIT_AUTH_TOKEN must be set in order to download Cromsfer from the private repository."
+#     exit 1
+# fi
 
 version=`python -c "exec(open('src/cromsfer/version.py').read()); print(__version__)"`
 
