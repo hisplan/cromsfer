@@ -3,7 +3,6 @@
 Transfers output files from Cromwell/WDL workflows to a designated S3 locations with a human-friendly directory structure. It supports:
 
 - FastQC (FASTQ QC)
-- STAR Transgenes
 - Sharp (Hashtag and CellPlex)
 - Sharp (CITE-seq)
 - Sharp (ASAP-seq)
@@ -13,6 +12,8 @@ Transfers output files from Cromwell/WDL workflows to a designated S3 locations 
 - Cell Ranger ATAC
 - Cell Ranger ARC
 - Cell Ranger CellPlex
+- Space Ranger
+- Transgenes for Cell Ranger
 - ArchR Stand Alone (aka. ArchRSA)
 - mkref (Generating genome index for STAR aligner)
 
