@@ -156,8 +156,14 @@ def transfer(config, workflow_id, path_tmp, dry_run):
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
 
-        elif pipeline_type == "StarTransgenes":
-            from cromsfer.workflows import StarTransgenes as x
+        elif pipeline_type == "TransgenesCellRanger":
+            from cromsfer.workflows import TransgenesCellRanger as x
+
+            construct_src_dst_info = x.construct_src_dst_info
+            get_glob_list = None
+
+        elif pipeline_type == "TransgenesSeqc":
+            from cromsfer.workflows import TransgenesSeqc as x
 
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
@@ -188,6 +194,12 @@ def transfer(config, workflow_id, path_tmp, dry_run):
 
         elif pipeline_type == "CellRangerCellPlex":
             from cromsfer.workflows import CellRangerCellPlex as x
+
+            construct_src_dst_info = x.construct_src_dst_info
+            get_glob_list = None
+
+        elif pipeline_type == "SpaceRanger":
+            from cromsfer.workflows import SpaceRanger as x
 
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
