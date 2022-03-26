@@ -14,13 +14,15 @@ Transfers output files from Cromwell/WDL workflows to a designated S3 locations 
 - Cell Ranger CellPlex
 - Space Ranger
 - Transgenes for Cell Ranger
+- Transgenes for SEQC
 - ArchR Stand Alone (aka. ArchRSA)
 - mkref (Generating genome index for STAR aligner)
+- Mito Tracing
 
 ## Prerequisites
 
-- AWS CLI
-- gsutil
+- AWS CLI (for Amazon Web Services)
+- gsutil (for Google Cloud Platform)
 
 ## Development Environment
 
@@ -48,6 +50,8 @@ cromsfer.poller --config config.aws-local-redis.yaml
 ```
 
 ### Run the Transfer Service
+
+`cromsfer.transfer` transfers the output files to the final destination.
 
 ```bash
 cromsfer.transfer  --config config.aws-local-redis.yaml
