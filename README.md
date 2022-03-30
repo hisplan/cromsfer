@@ -16,6 +16,7 @@ Transfers output files from Cromwell/WDL workflows to a designated S3 locations 
 - Transgenes for Cell Ranger
 - Transgenes for SEQC
 - ArchR Stand Alone (aka. ArchRSA)
+- ArchR + Cell Ranger (aka. ArchRCR)
 - mkref (Generating genome index for STAR aligner)
 - Mito Tracing
 
@@ -46,7 +47,7 @@ docker run --rm -d -p 6379:6379 redis:5.0.6
 `cromsfer.poller` picks up the workflows that have been completed, but not yet transferred.
 
 ```bash
-cromsfer.poller --config config.aws-local-redis.yaml
+cromsfer.poller --config config.dev.aws.us-east-1.yaml
 ```
 
 ### Run the Transfer Service
@@ -54,28 +55,27 @@ cromsfer.poller --config config.aws-local-redis.yaml
 `cromsfer.transfer` transfers the output files to the final destination.
 
 ```bash
-cromsfer.transfer  --config config.aws-local-redis.yaml
+cromsfer.transfer  --config config.dev.aws.us-east-1.yaml
 ```
 
 ### Utilities
-
-```bash
-$ export JOB_MANAGER_USERNAME=johnDoe
-$ export JOB_MANAGER_PWD=xyz123abc
-```
 
 Getting the metadata for a given workflow:
 
 ```bash
 $ cd utils
-$ ./get-metadata.sh -w 4bb895a2-dc44-4d6d-94ca-1294452e1bf8
+$ ./get-metadata.sh \
+    -c ../config.aws.us-east-1.yaml \
+    -w 4bb895a2-dc44-4d6d-94ca-1294452e1bf8
 ```
 
 Resetting the transfer status (i.e. "`-`")
 
 ```bash
 $ cd utils
-$ ./transfer-reset.sh -w 4bb895a2-dc44-4d6d-94ca-1294452e1bf8
+$ ./transfer-reset.sh \
+    -c ../config.aws.us-east-1.yaml \
+    -w 4bb895a2-dc44-4d6d-94ca-1294452e1bf8
 ```
 
 ## Deployment
