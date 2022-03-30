@@ -1,29 +1,21 @@
 #!/bin/bash
 
-if [ -z "$JOB_MANAGER_USERNAME" ] || [ -z "$JOB_MANAGER_PWD" ]
-then
-    echo "Credentials required!"
-    echo
-    echo "export JOB_MANAGER_USERNAME=<put-your-username-here>"
-    echo "export JOB_MANAGER_PWD=<put-your-password-here>"
-    echo
-    exit 1
-fi
-
-server_addr="ec2-100-26-88-232.compute-1.amazonaws.com"
+source get-config.sh
 
 usage()
 {
 cat << EOF
 USAGE: `basename $0` [options]
+    -c  config file name
     -w  workflow ID
     -s  status ("-" for reset, "n/a" for not applicable)
 EOF
 }
 
-while getopts "w:s:h" OPTION
+while getopts "c:w:s:h" OPTION
 do
     case $OPTION in
+        c) path_config=$OPTARG ;;
         w) workflow_id=$OPTARG ;;
         s) status=$OPTARG ;;
         h) usage; exit 1 ;;
@@ -31,16 +23,20 @@ do
     esac
 done
 
-if [ -z "$workflow_id" ] || [ -z "$status" ]
+if [ -z "$workflow_id" ] || [ -z "$status" ] || [ -z "$path_config" ]
 then
     usage
     exit 1
 fi
 
-curl -X PATCH "http://${server_addr}/api/workflows/v1/${workflow_id}/labels" \
+server_addr=$(get_config ${path_config} "url")
+username=$(get_config ${path_config} "username")
+password=$(get_config ${path_config} "password")
+
+curl -X PATCH "${server_addr}/api/workflows/v1/${workflow_id}/labels" \
     -H "accept: application/json" \
     -H "Content-Type: application/json" \
     --data "{\"transfer\":\"$status\"}" \
-    --user ${JOB_MANAGER_USERNAME}:${JOB_MANAGER_PWD} \
+    --user ${username}:${password} \
     --silent \
     | jq
