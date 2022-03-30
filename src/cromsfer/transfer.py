@@ -216,6 +216,12 @@ def transfer(config, workflow_id, path_tmp, dry_run):
             construct_src_dst_info = x.construct_src_dst_info
             get_glob_list = None
 
+        elif pipeline_type == "ArchRCR":
+            from cromsfer.workflows import ArchRCR as x
+
+            construct_src_dst_info = x.construct_src_dst_info
+            get_glob_list = None            
+
         elif pipeline_type == "MitoTracing":
             from cromsfer.workflows import MitoTracing as x
 
