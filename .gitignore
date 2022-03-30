@@ -4,6 +4,6 @@ __pycache__
 *.egg-info
 .DS_Store
 tmp/*
-config.aws.yaml
-config.gcp.yaml
-config.aws-local-redis.yaml
+config.aws.*.yaml
+config.gcp.*.yaml
+config.dev.*.yaml
